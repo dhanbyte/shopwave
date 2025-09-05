@@ -2,6 +2,7 @@
 'use client'
 import { useMemo, useState, Suspense, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
+import Head from 'next/head'
 import Gallery from '@/components/Gallery'
 import PriceTag from '@/components/PriceTag'
 import RatingStars from '@/components/RatingStars'
@@ -175,7 +176,56 @@ function ProductDetailContent() {
   }
 
   return (
-    <div>
+    <>
+      <Head>
+        <title>{p.name} - Buy Online at ShopWave</title>
+        <meta name="description" content={p.shortDescription || p.description} />
+        <meta name="keywords" content={`${p.name}, ${p.brand}, ${p.category}, ${p.tags?.join(', ')}, buy online, ShopWave`} />
+        <meta property="og:title" content={`${p.name} - ShopWave`} />
+        <meta property="og:description" content={p.shortDescription || p.description} />
+        <meta property="og:image" content={p.image} />
+        <meta property="og:type" content="product" />
+        <meta property="product:price:amount" content={String(p.price.discounted || p.price.original)} />
+        <meta property="product:price:currency" content={p.price.currency || 'INR'} />
+        <meta property="product:availability" content={p.quantity > 0 ? 'in stock' : 'out of stock'} />
+        <meta property="product:brand" content={p.brand} />
+        <meta property="product:category" content={p.category} />
+        <link rel="canonical" href={`https://shopwave.com/product/${p.slug}`} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Product",
+              "name": p.name,
+              "description": p.description,
+              "image": [p.image, ...(p.extraImages || [])],
+              "brand": {
+                "@type": "Brand",
+                "name": p.brand
+              },
+              "category": p.category,
+              "sku": p.sku,
+              "offers": {
+                "@type": "Offer",
+                "price": p.price.discounted || p.price.original,
+                "priceCurrency": p.price.currency || "INR",
+                "availability": p.quantity > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+                "seller": {
+                  "@type": "Organization",
+                  "name": "ShopWave"
+                }
+              },
+              "aggregateRating": p.ratings ? {
+                "@type": "AggregateRating",
+                "ratingValue": p.ratings.average,
+                "reviewCount": p.ratings.count
+              } : undefined
+            })
+          }}
+        />
+      </Head>
+      <div>
       <button onClick={() => router.back()} className="md:hidden flex items-center gap-1 text-sm text-gray-600 mb-2">
         <ChevronLeft size={16} /> Back
       </button>
@@ -262,6 +312,7 @@ function ProductDetailContent() {
 
       <StickyActionButtons />
     </div>
+    </>
   )
 }
 

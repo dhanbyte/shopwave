@@ -38,6 +38,18 @@ if (uri) {
 
 export async function getDatabase(): Promise<Db> {
   if (!clientPromise) {
+    // Return mock database for build time when MongoDB is not available
+    if (process.env.NODE_ENV === 'production' && !uri) {
+      return {
+        collection: () => ({
+          find: () => ({ toArray: () => Promise.resolve([]) }),
+          findOne: () => Promise.resolve(null),
+          insertOne: () => Promise.resolve({ insertedId: 'mock' }),
+          updateOne: () => Promise.resolve({ matchedCount: 0 }),
+          deleteOne: () => Promise.resolve({ deletedCount: 0 })
+        })
+      } as any;
+    }
     throw new Error('MongoDB connection not initialized')
   }
   try {

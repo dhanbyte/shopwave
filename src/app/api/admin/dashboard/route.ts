@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getDatabase } from '@/lib/db'
 
-export async function GET() {
+export async function GET(request: Request, context?: { params?: Promise<any> }) {
   try {
     const db = await getDatabase()
     

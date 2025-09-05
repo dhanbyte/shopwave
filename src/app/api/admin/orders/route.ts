@@ -27,7 +27,7 @@ export async function GET() {
   }
 }
 
-export async function PUT(request: NextRequest) {
+export async function PUT(request: NextRequest, context: { params: Promise<{}> }) {
   try {
     const { orderId, status } = await request.json()
     

@@ -3,7 +3,7 @@ import { getDatabase } from '@/lib/db';
 import type { Product } from '@/lib/types';
 
 // GET all products with filtering support
-export async function GET(request: Request) {
+export async function GET(request: Request, context?: { params?: Promise<any> }) {
     try {
         const { searchParams } = new URL(request.url);
         const category = searchParams.get('category');
@@ -43,23 +43,42 @@ export async function GET(request: Request) {
 }
 
 // POST - create a new product
-export async function POST(request: Request) {
+export async function POST(request: Request, context?: { params?: Promise<any> }) {
     try {
         const productData = await request.json();
         
         // Validate required fields
-        if (!productData.name || !productData.price || !productData.category) {
+        if (!productData.name || !productData.price?.original || !productData.category || !productData.image) {
             return NextResponse.json(
-                { error: 'Missing required fields: name, price, category' },
+                { error: 'Missing required fields: name, price.original, category, image' },
                 { status: 400 }
             );
         }
 
+        // Generate ID and ensure proper data structure
+        const productId = `prod_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        
         const db = await getDatabase();
         const newProduct = {
+            id: productId,
             ...productData,
-            created_at: new Date(),
-            updated_at: new Date()
+            // Ensure arrays are properly initialized
+            extraImages: productData.extraImages || [],
+            features: productData.features || [],
+            tags: productData.tags || [],
+            specifications: productData.specifications || {},
+            // Ensure nested objects are properly structured
+            inventory: {
+                inStock: productData.quantity > 0,
+                lowStockThreshold: productData.inventory?.lowStockThreshold || 5
+            },
+            returnPolicy: {
+                eligible: productData.returnPolicy?.eligible || true,
+                duration: productData.returnPolicy?.duration || 7
+            },
+            // Add timestamps
+            createdAt: new Date(),
+            updatedAt: new Date()
         };
         
         const result = await db.collection('products').insertOne(newProduct);

@@ -1,7 +1,6 @@
 
 'use client'
 import { create } from 'zustand'
-import { googleAppsScriptService } from './googleAppsScript'
 import type { Product } from './types'
 import { AYURVEDIC_PRODUCTS } from './sampleData'
 import { HOME_PRODUCTS } from './data/home'
@@ -35,57 +34,26 @@ export const useProductStore = create<ProductState>()((set, get) => ({
     
     set({ isLoading: true });
     
-    // For now, just use sample data to avoid API errors during development
-    // TODO: Configure proper Google Apps Script URL or database connection
-    console.log('Using sample data for product store');
-    set({ products: ALL_SAMPLE_PRODUCTS, isLoading: false, initialized: true });
-    return;
-    
-    // Commented out external API calls until proper configuration
-    /*
-    // Check if Google Apps Script URL is configured
-    const appsScriptUrl = process.env.NEXT_PUBLIC_APPS_SCRIPT_API_URL;
-    
-    if (!appsScriptUrl || appsScriptUrl.trim() === '') {
-      console.log('Google Apps Script API URL not configured, using sample data');
-      set({ products: ALL_SAMPLE_PRODUCTS, isLoading: false, initialized: true });
-      return;
-    }
-    
     try {
-      // Try to fetch from Google Apps Script API first
-      const products = await googleAppsScriptService.getProducts();
-      
-      if (products.length > 0) {
-        console.log(`Successfully loaded ${products.length} products from Google Apps Script`);
-        set({ products, isLoading: false, initialized: true });
-      } else {
-        // Fallback to sample data if API returns no products or fails
-        console.warn("Google Apps Script API returned no products, using sample data");
-        set({ products: ALL_SAMPLE_PRODUCTS, isLoading: false, initialized: true });
-      }
-    } catch (error) {
-      console.error("Error fetching products from Apps Script:", error);
-      
-      // Try local API as secondary fallback
-      try {
-        console.log("Trying local API as fallback...");
-        const response = await fetch('/api/products');
-        if (response.ok) {
-          const products = await response.json();
-          console.log(`Successfully loaded ${products.length} products from local API`);
+      // Try to fetch from MongoDB API first
+      const response = await fetch('/api/products');
+      if (response.ok) {
+        const result = await response.json();
+        const products = result.data || [];
+        
+        if (products.length > 0) {
+          console.log(`Successfully loaded ${products.length} products from MongoDB`);
           set({ products, isLoading: false, initialized: true });
           return;
         }
-      } catch (apiError) {
-        console.error("Local API also failed:", apiError);
       }
-      
-      console.log("All API sources failed, falling back to sample data");
-      // Use sample data as final fallback
-      set({ products: ALL_SAMPLE_PRODUCTS, isLoading: false, initialized: true });
+    } catch (error) {
+      console.error("Error fetching products from MongoDB:", error);
     }
-    */
+    
+    // Fallback to sample data if API fails or returns no products
+    console.log('Using sample data as fallback');
+    set({ products: ALL_SAMPLE_PRODUCTS, isLoading: false, initialized: true });
   },
 
   getProduct: (id: string) => {
@@ -94,19 +62,45 @@ export const useProductStore = create<ProductState>()((set, get) => ({
 
   addProduct: async (productData) => {
     try {
-      const newProduct = await googleAppsScriptService.addProduct(productData);
+      const response = await fetch('/api/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(productData)
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to add product');
+      }
+      
+      const result = await response.json();
+      const newProduct = result.data;
+      
       const currentProducts = get().products;
       set({ products: [...currentProducts, newProduct] });
       return newProduct;
     } catch (error) {
-      console.error("Error adding product via Google Apps Script:", error);
+      console.error("Error adding product:", error);
       throw error;
     }
   },
 
   updateProduct: async (id: string, updates: Partial<Product>) => {
     try {
-      const updatedProduct = await googleAppsScriptService.updateProduct(id, updates);
+      const response = await fetch(`/api/products/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updates)
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to update product');
+      }
+      
+      const result = await response.json();
+      const updatedProduct = result.data;
+      
       if (updatedProduct) {
         const currentProducts = get().products;
         const updatedProducts = currentProducts.map(product => 
@@ -116,42 +110,56 @@ export const useProductStore = create<ProductState>()((set, get) => ({
       }
       return updatedProduct;
     } catch (error) {
-      console.error("Error updating product via Google Apps Script:", error);
+      console.error("Error updating product:", error);
       throw error;
     }
   },
 
   deleteProduct: async (id: string) => {
     try {
-      const success = await googleAppsScriptService.deleteProduct(id);
-      if (success) {
-        const currentProducts = get().products;
-        const filteredProducts = currentProducts.filter(product => product.id !== id);
-        set({ products: filteredProducts });
+      const response = await fetch(`/api/products/${id}`, {
+        method: 'DELETE'
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to delete product');
       }
-      return success;
+      
+      const currentProducts = get().products;
+      const filteredProducts = currentProducts.filter(product => product.id !== id);
+      set({ products: filteredProducts });
+      return true;
     } catch (error) {
-      console.error("Error deleting product via Google Apps Script:", error);
+      console.error("Error deleting product:", error);
       return false;
     }
   },
 
   searchProducts: async (query: string) => {
     try {
-      const products = await googleAppsScriptService.searchProducts(query);
-      return products;
+      const response = await fetch(`/api/products?search=${encodeURIComponent(query)}`);
+      if (response.ok) {
+        const result = await response.json();
+        return result.data || [];
+      }
+      return [];
     } catch (error) {
-      console.error("Error searching products via Google Apps Script:", error);
+      console.error("Error searching products:", error);
       return [];
     }
   },
 
   getProductsByCategory: async (category: string) => {
     try {
-      const products = await googleAppsScriptService.getProductsByCategory(category);
-      return products;
+      const response = await fetch(`/api/products?category=${encodeURIComponent(category)}`);
+      if (response.ok) {
+        const result = await response.json();
+        return result.data || [];
+      }
+      return [];
     } catch (error) {
-      console.error("Error fetching products by category via Google Apps Script:", error);
+      console.error("Error fetching products by category:", error);
       return [];
     }
   },
@@ -159,10 +167,16 @@ export const useProductStore = create<ProductState>()((set, get) => ({
   refetch: async () => {
     set({ isLoading: true });
     try {
-      const products = await googleAppsScriptService.getProducts();
-      set({ products, isLoading: false });
+      const response = await fetch('/api/products');
+      if (response.ok) {
+        const result = await response.json();
+        const products = result.data || [];
+        set({ products, isLoading: false });
+      } else {
+        set({ isLoading: false });
+      }
     } catch (error) {
-      console.error("Error refetching products from Google Apps Script:", error);
+      console.error("Error refetching products:", error);
       set({ isLoading: false });
     }
   },

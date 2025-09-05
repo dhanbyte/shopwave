@@ -4,9 +4,9 @@ import { ObjectId } from 'mongodb';
 import type { Product } from '@/lib/types';
 
 // GET a single product by ID
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
-        const { id } = params;
+        const { id } = await params;
         if (!id) {
             return NextResponse.json({ error: 'Product ID is required' }, { status: 400 });
         }
@@ -23,7 +23,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
             data: product
         });
     } catch (error) {
-        console.error(`Error fetching product ${params.id}:`, error);
+        console.error(`Error fetching product ${id}:`, error);
         return NextResponse.json({ 
             success: false,
             error: 'Failed to fetch product' 
@@ -32,25 +32,49 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 }
 
 // PUT (update) a product by ID
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
-        const { id } = params;
+        const { id } = await params;
         if (!id) {
             return NextResponse.json({ error: 'Product ID is required' }, { status: 400 });
         }
 
         const productData = await request.json();
-        const { _id, created_at, ...updateData } = productData;
+        
+        // Validate required fields
+        if (!productData.name || !productData.price?.original || !productData.category) {
+            return NextResponse.json(
+                { error: 'Missing required fields: name, price.original, category' },
+                { status: 400 }
+            );
+        }
+        
+        const { _id, created_at, createdAt, ...updateData } = productData;
+        
+        // Ensure proper data structure for update
+        const finalUpdateData = {
+            ...updateData,
+            // Ensure arrays are properly initialized
+            extraImages: updateData.extraImages || [],
+            features: updateData.features || [],
+            tags: updateData.tags || [],
+            specifications: updateData.specifications || {},
+            // Ensure nested objects are properly structured
+            inventory: {
+                inStock: updateData.quantity > 0,
+                lowStockThreshold: updateData.inventory?.lowStockThreshold || 5
+            },
+            returnPolicy: {
+                eligible: updateData.returnPolicy?.eligible || true,
+                duration: updateData.returnPolicy?.duration || 7
+            },
+            updatedAt: new Date()
+        };
 
         const db = await getDatabase();
         const result = await db.collection('products').updateOne(
             { _id: new ObjectId(id) },
-            { 
-                $set: { 
-                    ...updateData, 
-                    updated_at: new Date() 
-                } 
-            }
+            { $set: finalUpdateData }
         );
 
         if (result.matchedCount === 0) {
@@ -65,7 +89,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
         });
 
     } catch (error) {
-        console.error(`Error updating product ${params.id}:`, error);
+        console.error(`Error updating product ${id}:`, error);
         return NextResponse.json({ 
             success: false,
             error: 'Failed to update product' 
@@ -74,9 +98,9 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 }
 
 // DELETE a product by ID
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
-        const { id } = params;
+        const { id } = await params;
         if (!id) {
             return NextResponse.json({ error: 'Product ID is required' }, { status: 400 });
         }
@@ -93,7 +117,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
             message: 'Product deleted successfully' 
         });
     } catch (error) {
-        console.error(`Error deleting product ${params.id}:`, error);
+        console.error(`Error deleting product ${id}:`, error);
         return NextResponse.json({ 
             success: false,
             error: 'Failed to delete product' 

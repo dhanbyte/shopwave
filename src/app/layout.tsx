@@ -30,8 +30,7 @@ export const metadata: Metadata = {
     description: 'Shop premium tech accessories, home essentials & authentic ayurvedic products.',
     creator: '@shopwave',
   },
-  viewport: 'width=device-width, initial-scale=1',
-  themeColor: '#3b82f6',
+
 };
 
 const WhatsAppButton = () => {
@@ -51,6 +50,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const clerkPublishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || 'pk_test_placeholder';
+  
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -78,7 +79,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased bg-background">
-        <ClerkProvider>
+        <ClerkProvider publishableKey={clerkPublishableKey}>
           <ClerkAuthProvider>
             <RootContent>{children}</RootContent>
             <WhatsAppButton />

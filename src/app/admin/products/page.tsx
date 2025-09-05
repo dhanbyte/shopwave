@@ -52,9 +52,9 @@ export default function AdminProductsPage() {
 
     const handleSaveProduct = async (productData: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>) => {
         try {
-            if (selectedProduct?.id) {
-                // Editing existing product
-                await updateProduct(selectedProduct.id, productData);
+            if (selectedProduct?._id) {
+                // Editing existing product - use MongoDB _id
+                await updateProduct(selectedProduct._id, productData);
                 toast({ title: "Product Updated", description: `${productData.name} has been updated.` });
             } else {
                 // Adding new product
@@ -146,12 +146,12 @@ export default function AdminProductsPage() {
                         </thead>
                         <tbody>
                             {products.map(product => (
-                                <tr key={product.id} className="border-b hover:bg-gray-50">
+                                <tr key={product._id || product.id} className="border-b hover:bg-gray-50">
                                     <td className="p-4">
                                         <div className="flex items-center gap-3">
                                             <div className="flex-shrink-0">
                                                 <Image 
-                                                    src={product.extraImages?.[0] || '/placeholder-product.jpg'} 
+                                                    src={product.image || product.extraImages?.[0] || '/placeholder-product.jpg'} 
                                                     alt={product.name} 
                                                     width={50} 
                                                     height={50} 
@@ -160,7 +160,7 @@ export default function AdminProductsPage() {
                                             </div>
                                             <div className="min-w-0 flex-1">
                                                 <p className="font-medium text-gray-900 truncate">{product.name}</p>
-                                                <p className="text-gray-500 text-xs truncate">{product.id}</p>
+                                                <p className="text-gray-500 text-xs truncate">{product._id || product.id}</p>
                                             </div>
                                         </div>
                                     </td>
@@ -173,7 +173,7 @@ export default function AdminProductsPage() {
                                     </td>
                                     <td className="p-4">
                                         <div className="text-gray-700">
-                                            <p className="font-semibold">{product.price_currency}{product.price_original}</p>
+                                            <p className="font-semibold">{product.price?.currency || '₹'}{product.price?.original}</p>
                                         </div>
                                     </td>
                                     <td className="p-4">
@@ -186,11 +186,11 @@ export default function AdminProductsPage() {
                                         </span>
                                     </td>
                                     <td className="p-4">
-                                        {product.ratings_average > 0 ? (
+                                        {product.ratings?.average > 0 ? (
                                             <div className="flex items-center gap-1">
                                                 <span className="text-yellow-500">★</span>
-                                                <span className="text-sm">{product.ratings_average}</span>
-                                                <span className="text-xs text-gray-500">({product.ratings_count})</span>
+                                                <span className="text-sm">{product.ratings.average}</span>
+                                                <span className="text-xs text-gray-500">({product.ratings.count})</span>
                                             </div>
                                         ) : (
                                             <span className="text-gray-400 text-xs">No ratings</span>
@@ -217,7 +217,7 @@ export default function AdminProductsPage() {
                                             <Button
                                                 variant="outline"
                                                 size="sm"
-                                                onClick={() => confirmDelete(product.id)}
+                                                onClick={() => confirmDelete(product._id || product.id)}
                                                 className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
                                             >
                                                 <Trash2 className="h-4 w-4" />
@@ -255,7 +255,7 @@ export default function AdminProductsPage() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <Image 
-                                        src={selectedProduct.extraImages?.[0] || '/placeholder-product.jpg'} 
+                                        src={selectedProduct.image || selectedProduct.extraImages?.[0] || '/placeholder-product.jpg'} 
                                         alt={selectedProduct.name} 
                                         width={200} 
                                         height={200} 
@@ -278,7 +278,7 @@ export default function AdminProductsPage() {
                                     <div>
                                         <label className="text-sm font-medium text-gray-500">Price</label>
                                         <p className="text-xl font-bold text-green-600">
-                                            {selectedProduct.price_currency}{selectedProduct.price_original}
+                                            {selectedProduct.price?.currency || '₹'}{selectedProduct.price?.original}
                                         </p>
                                     </div>
                                     <div>
