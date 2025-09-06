@@ -1,14 +1,7 @@
 
 'use client'
 import { create } from 'zustand'
-import { safeGet, safeSet } from './storage'
-import type { Order, Address, PaymentMethod } from './types'
-import type { CartItem } from './cartStore'
-import { useCart } from './cartStore'
 
-type AllOrdersData = {
-  [userId: string]: Order[]
-}
 
 type OrdersState = {
   orders: Order[]
@@ -21,13 +14,7 @@ type OrdersState = {
   clear: () => void
 }
 
-const getAllOrders = (): AllOrdersData => {
-  return safeGet('all-orders', {});
-}
 
-const saveAllOrders = (data: AllOrdersData) => {
-  safeSet('all-orders', data);
-}
 
 export const useOrders = create<OrdersState>()((set, get) => ({
   orders: [],
@@ -38,7 +25,7 @@ export const useOrders = create<OrdersState>()((set, get) => ({
     
     if (userId) {
       try {
-        const response = await fetch(`/api/user-data?userId=${userId}&type=orders`);
+        const response = await fetch(`/api/user-data?userId=${encodeURIComponent(userId)}&type=orders`);
         if (response.ok) {
           const serverOrders = await response.json();
           if (serverOrders && Array.isArray(serverOrders)) {
@@ -48,7 +35,7 @@ export const useOrders = create<OrdersState>()((set, get) => ({
           }
         }
       } catch (error) {
-        console.error('Error loading orders from server:', error);
+        console.warn('Orders sync failed:', error);
       }
     } else {
       // Admin - fetch all orders
@@ -60,7 +47,7 @@ export const useOrders = create<OrdersState>()((set, get) => ({
           return;
         }
       } catch (error) {
-        console.error('Error loading admin orders:', error);
+        console.warn('Admin orders sync failed:', error);
       }
     }
     
@@ -82,18 +69,12 @@ export const useOrders = create<OrdersState>()((set, get) => ({
       referralCode
     }
     
+    const currentOrders = get().orders;
+    const newOrders = [order, ...currentOrders];
+    
+    set({ orders: newOrders });
+    
     try {
-      // Get current orders
-      const response = await fetch(`/api/user-data?userId=${userId}&type=orders`);
-      let currentOrders = [];
-      if (response.ok) {
-        const data = await response.json();
-        currentOrders = data || [];
-      }
-      
-      const newOrders = [order, ...currentOrders];
-      
-      // Save to database
       await fetch('/api/user-data', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -101,10 +82,8 @@ export const useOrders = create<OrdersState>()((set, get) => ({
       });
       
       await clearCartFromDB(userId);
-      set(state => ({ orders: [order, ...state.orders] }));
-      
     } catch (error) {
-      console.error('Error saving orders to server:', error);
+      console.warn('Order save failed:', error);
     }
     
     return order;

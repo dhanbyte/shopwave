@@ -1,17 +1,12 @@
 
 'use client'
 import { create } from 'zustand'
-import { safeGet, safeSet } from './storage'
 import type { Product } from './types'
 import { useProductStore } from './productStore'
 
 export type CartItem = Pick<Product, 'id' | 'name' | 'image'> & {
   qty: number
   price: number // This is the discounted price
-}
-
-type AllCartsData = {
-  [userId: string]: CartItem[]
 }
 
 type CartState = {
@@ -81,13 +76,7 @@ const calculateTotals = (items: CartItem[]) => {
   return { subtotal, totalDiscount, totalShipping, totalTax: platformFee, total }
 }
 
-const getAllCarts = (): AllCartsData => {
-  return safeGet('all-carts', {});
-}
 
-const saveAllCarts = (data: AllCartsData) => {
-  safeSet('all-carts', data);
-}
 
 export const useCart = create<CartState>()((set, get) => ({
   items: [],
@@ -98,7 +87,7 @@ export const useCart = create<CartState>()((set, get) => ({
   total: 0,
   init: async (userId: string) => {
     try {
-      const response = await fetch(`/api/user-data?userId=${userId}&type=cart`);
+      const response = await fetch(`/api/user-data?userId=${encodeURIComponent(userId)}&type=cart`);
       if (response.ok) {
         const serverCart = await response.json();
         if (serverCart && Array.isArray(serverCart)) {
@@ -107,46 +96,41 @@ export const useCart = create<CartState>()((set, get) => ({
         }
       }
     } catch (error) {
-      console.error('Error loading cart from server:', error);
+      console.warn('Cart sync failed, starting with empty cart:', error);
     }
     
     set({ items: [], ...calculateTotals([]) });
   },
   add: async (userId: string, item: CartItem) => {
-    const allCarts = getAllCarts();
-    let userCart = allCarts[userId] || [];
-    const existing = userCart.find((p) => p.id === item.id)
+    const currentItems = get().items;
+    const existing = currentItems.find((p) => p.id === item.id)
     
+    let newItems;
     if (existing) {
-      userCart = userCart.map((p) =>
+      newItems = currentItems.map((p) =>
         p.id === item.id ? { ...p, qty: Math.min(99, p.qty + item.qty) } : p
       )
     } else {
-      userCart = [...userCart, { ...item, qty: Math.max(1, item.qty) }]
+      newItems = [...currentItems, { ...item, qty: Math.max(1, item.qty) }]
     }
-
-    allCarts[userId] = userCart;
-    saveAllCarts(allCarts);
+    
+    set({ items: newItems, ...calculateTotals(newItems) });
     
     try {
       await fetch('/api/user-data', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, type: 'cart', data: userCart })
+        body: JSON.stringify({ userId, type: 'cart', data: newItems })
       });
     } catch (error) {
-      console.error('Error saving cart to server:', error);
+      console.warn('Cart save failed:', error);
     }
-    
-    set({ items: userCart, ...calculateTotals(userCart) });
   },
   remove: async (userId: string, id: string) => {
-    const allCarts = getAllCarts();
-    let userCart = allCarts[userId] || [];
-    const newItems = userCart.filter((p) => p.id !== id);
+    const currentItems = get().items;
+    const newItems = currentItems.filter((p) => p.id !== id);
     
-    allCarts[userId] = newItems;
-    saveAllCarts(allCarts);
+    set({ items: newItems, ...calculateTotals(newItems) });
     
     try {
       await fetch('/api/user-data', {
@@ -155,20 +139,16 @@ export const useCart = create<CartState>()((set, get) => ({
         body: JSON.stringify({ userId, type: 'cart', data: newItems })
       });
     } catch (error) {
-      console.error('Error saving cart to server:', error);
+      console.warn('Cart save failed:', error);
     }
-    
-    set({ items: newItems, ...calculateTotals(newItems) });
   },
   setQty: async (userId: string, id: string, qty: number) => {
-    const allCarts = getAllCarts();
-    let userCart = allCarts[userId] || [];
-    const newItems = userCart.map((p) =>
+    const currentItems = get().items;
+    const newItems = currentItems.map((p) =>
       p.id === id ? { ...p, qty: Math.max(1, Math.min(99, qty)) } : p
     );
-
-    allCarts[userId] = newItems;
-    saveAllCarts(allCarts);
+    
+    set({ items: newItems, ...calculateTotals(newItems) });
     
     try {
       await fetch('/api/user-data', {
@@ -177,18 +157,14 @@ export const useCart = create<CartState>()((set, get) => ({
         body: JSON.stringify({ userId, type: 'cart', data: newItems })
       });
     } catch (error) {
-      console.error('Error saving cart to server:', error);
+      console.warn('Cart save failed:', error);
     }
-    
-    set({ items: newItems, ...calculateTotals(newItems) });
   },
   clear: () => {
     set({ items: [], subtotal: 0, totalDiscount: 0, totalShipping: 0, totalTax: 0, total: 0 })
   },
   clearCartFromDB: async (userId: string) => {
-    const allCarts = getAllCarts();
-    allCarts[userId] = [];
-    saveAllCarts(allCarts);
+    set({ items: [], subtotal: 0, totalDiscount: 0, totalShipping: 0, totalTax: 0, total: 0 });
     
     try {
       await fetch('/api/user-data', {
@@ -197,9 +173,7 @@ export const useCart = create<CartState>()((set, get) => ({
         body: JSON.stringify({ userId, type: 'cart', data: [] })
       });
     } catch (error) {
-      console.error('Error clearing cart on server:', error);
+      console.warn('Cart clear failed:', error);
     }
-    
-    get().clear();
   }
 }))

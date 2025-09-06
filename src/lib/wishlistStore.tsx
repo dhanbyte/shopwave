@@ -1,11 +1,7 @@
 
 'use client'
 import { create } from 'zustand'
-import { safeGet, safeSet } from './storage'
 
-type AllWishlistsData = {
-  [userId: string]: string[] // array of product IDs
-}
 
 type WishlistState = {
   ids: string[]
@@ -18,13 +14,7 @@ type WishlistState = {
   clear: () => void
 }
 
-const getAllWishlists = (): AllWishlistsData => {
-  return safeGet('all-wishlists', {});
-}
 
-const saveAllWishlists = (data: AllWishlistsData) => {
-  safeSet('all-wishlists', data);
-}
 
 export const useWishlist = create<WishlistState>()((set, get) => ({
   ids: [],
@@ -33,7 +23,7 @@ export const useWishlist = create<WishlistState>()((set, get) => ({
   init: async (userId: string) => {
     set({ isLoading: true });
     try {
-      const response = await fetch(`/api/user-data?userId=${userId}&type=wishlist`);
+      const response = await fetch(`/api/user-data?userId=${encodeURIComponent(userId)}&type=wishlist`);
       if (response.ok) {
         const serverWishlist = await response.json();
         if (serverWishlist && Array.isArray(serverWishlist)) {
@@ -42,37 +32,34 @@ export const useWishlist = create<WishlistState>()((set, get) => ({
         }
       }
     } catch (error) {
-      console.error('Error loading wishlist from server:', error);
+      console.warn('Wishlist sync failed:', error);
     }
     
     set({ ids: [], isLoading: false });
   },
   toggle: async (userId: string, productId: string) => {
-    const allWishlists = getAllWishlists();
-    let userWishlist = allWishlists[userId] || [];
-    const exists = userWishlist.includes(productId);
+    const currentIds = get().ids;
+    const exists = currentIds.includes(productId);
 
+    let newIds;
     if (exists) {
-      userWishlist = userWishlist.filter(id => id !== productId);
+      newIds = currentIds.filter(id => id !== productId);
     } else {
-      userWishlist.push(productId);
+      newIds = [...currentIds, productId];
       set({ hasNewItem: true });
     }
     
-    allWishlists[userId] = userWishlist;
-    saveAllWishlists(allWishlists);
+    set({ ids: newIds });
     
     try {
       await fetch('/api/user-data', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, type: 'wishlist', data: userWishlist })
+        body: JSON.stringify({ userId, type: 'wishlist', data: newIds })
       });
     } catch (error) {
-      console.error('Error saving wishlist to server:', error);
+      console.warn('Wishlist save failed:', error);
     }
-    
-    set({ ids: userWishlist });
   },
   has: (id: string) => {
     return get().ids.includes(id)
