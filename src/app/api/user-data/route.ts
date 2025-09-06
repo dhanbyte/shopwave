@@ -8,7 +8,11 @@ export async function GET(request: NextRequest, context?: { params?: Promise<any
     const type = searchParams.get('type')
     
     if (!userId || !type) {
-      return NextResponse.json({ error: 'Missing userId or type' }, { status: 400 })
+      return NextResponse.json({ 
+        success: true,
+        message: 'User data API ready. Use ?userId=<id>&type=<type> to fetch data',
+        example: '?userId=user123&type=cart'
+      })
     }
     
     const db = await getDatabase()

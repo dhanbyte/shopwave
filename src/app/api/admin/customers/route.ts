@@ -23,18 +23,44 @@ export async function GET(request: Request, context?: { params?: Promise<any> })
       const wishlist = userData.find(d => d.type === 'wishlist')?.data || []
       const addresses = userData.find(d => d.type === 'addresses')?.data || []
       const orders = userData.find(d => d.type === 'orders')?.data || []
+      const paymentMethods = userData.find(d => d.type === 'payment_methods')?.data || []
+      
+      // Get payment gateway usage from orders
+      const paymentGateways = orders.reduce((acc, order) => {
+        if (order.paymentMethod) {
+          acc[order.paymentMethod] = (acc[order.paymentMethod] || 0) + 1
+        }
+        return acc
+      }, {})
       
       customersData.push({
         id: userId,
         email: user.email || user.emailAddress,
         fullName: user.full_name || user.fullName || (user.firstName ? user.firstName + ' ' + (user.lastName || '') : null),
+        phone: user.phone || addresses[0]?.phone || null,
         createdAt: user.created_at || user.createdAt,
-        cart: cart.length,
-        wishlist: wishlist.length,
-        addresses: addresses.length,
-        orders: orders.length,
-        totalSpent: orders.reduce((sum, order) => sum + (order.total || 0), 0),
-        lastActivity: new Date()
+        cart: {
+          count: cart.length,
+          items: cart
+        },
+        wishlist: {
+          count: wishlist.length,
+          items: wishlist
+        },
+        addresses: {
+          count: addresses.length,
+          list: addresses
+        },
+        orders: {
+          count: orders.length,
+          list: orders.slice(0, 5), // Show last 5 orders
+          totalSpent: orders.reduce((sum, order) => sum + (order.total || 0), 0)
+        },
+        paymentMethods: {
+          saved: paymentMethods,
+          gatewayUsage: paymentGateways
+        },
+        lastActivity: orders.length > 0 ? new Date(Math.max(...orders.map(o => new Date(o.createdAt || o.orderDate).getTime()))) : user.created_at || user.createdAt
       })
     }
     
