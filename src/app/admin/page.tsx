@@ -67,10 +67,17 @@ export default function AdminPage() {
             const response = await fetch('/api/admin/dashboard')
             if (response.ok) {
                 const data = await response.json()
-                setStats(data)
+                setStats({
+                    totalOrders: data.totalOrders || 0,
+                    totalCustomers: data.totalCustomers || 0,
+                    totalRevenue: data.totalRevenue || 0
+                })
+            } else {
+                setStats({ totalOrders: 0, totalCustomers: 0, totalRevenue: 0 })
             }
         } catch (error) {
             console.error('Error fetching dashboard stats:', error)
+            setStats({ totalOrders: 0, totalCustomers: 0, totalRevenue: 0 })
         } finally {
             setIsLoading(false)
         }
@@ -117,13 +124,13 @@ export default function AdminPage() {
                     <StatCard
                         icon={IndianRupee}
                         title="Total Revenue"
-                        value={`₹${stats.totalRevenue.toLocaleString()}`}
+                        value={`₹${(stats.totalRevenue || 0).toLocaleString()}`}
                         color="bg-green-500"
                     />
                     <StatCard
                         icon={ShoppingCart}
                         title="Total Orders"
-                        value={stats.totalOrders}
+                        value={stats.totalOrders || 0}
                         color="bg-blue-500"
                         href="/admin/orders"
                     />
@@ -137,7 +144,7 @@ export default function AdminPage() {
                     <StatCard
                         icon={Users}
                         title="Total Customers"
-                        value={stats.totalCustomers}
+                        value={stats.totalCustomers || 0}
                         color="bg-orange-500"
                         href="/admin/customers"
                     />
@@ -184,17 +191,17 @@ export default function AdminPage() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
                         <div className="p-4 bg-green-50 rounded-lg">
                             <h3 className="font-semibold text-green-800">Revenue</h3>
-                            <p className="text-2xl font-bold text-green-600">₹{stats.totalRevenue.toLocaleString()}</p>
+                            <p className="text-2xl font-bold text-green-600">₹{(stats.totalRevenue || 0).toLocaleString()}</p>
                             <p className="text-sm text-green-600">From delivered orders</p>
                         </div>
                         <div className="p-4 bg-blue-50 rounded-lg">
                             <h3 className="font-semibold text-blue-800">Orders</h3>
-                            <p className="text-2xl font-bold text-blue-600">{stats.totalOrders}</p>
+                            <p className="text-2xl font-bold text-blue-600">{stats.totalOrders || 0}</p>
                             <p className="text-sm text-blue-600">Total orders placed</p>
                         </div>
                         <div className="p-4 bg-orange-50 rounded-lg">
                             <h3 className="font-semibold text-orange-800">Customers</h3>
-                            <p className="text-2xl font-bold text-orange-600">{stats.totalCustomers}</p>
+                            <p className="text-2xl font-bold text-orange-600">{stats.totalCustomers || 0}</p>
                             <p className="text-sm text-orange-600">Unique customers</p>
                         </div>
                     </div>
