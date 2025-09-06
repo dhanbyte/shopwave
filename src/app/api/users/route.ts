@@ -5,9 +5,11 @@ export async function POST(request: NextRequest) {
   try {
     const userData = await request.json()
     
-    if (!userData.id) {
+    if (!userData.id && !userData._id) {
       return NextResponse.json({ error: 'Missing user id' }, { status: 400 })
     }
+    
+    const userId = userData.id || userData._id
     
     if (!process.env.MONGODB_URI) {
       return NextResponse.json({ success: true })
@@ -16,15 +18,17 @@ export async function POST(request: NextRequest) {
     const db = await getDatabase()
     
     // Use upsert to handle Clerk user data
+    const { created_at, ...updateData } = userData
     await db.collection('users').updateOne(
-      { _id: userData._id },
+      { _id: userId },
       { 
         $set: {
-          ...userData,
+          ...updateData,
+          _id: userId,
           updated_at: new Date()
         },
         $setOnInsert: {
-          created_at: userData.created_at || new Date()
+          created_at: created_at || new Date()
         }
       },
       { upsert: true }

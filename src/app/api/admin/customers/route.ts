@@ -26,16 +26,20 @@ export async function GET(request: Request, context?: { params?: Promise<any> })
       
       customersData.push({
         id: userId,
-        email: user.email,
-        fullName: user.full_name,
-        createdAt: user.created_at,
+        email: user.email || user.emailAddress,
+        fullName: user.full_name || user.fullName || (user.firstName ? user.firstName + ' ' + (user.lastName || '') : null),
+        createdAt: user.created_at || user.createdAt,
         cart: cart.length,
         wishlist: wishlist.length,
         addresses: addresses.length,
         orders: orders.length,
-        totalSpent: orders.reduce((sum, order) => sum + (order.total || 0), 0)
+        totalSpent: orders.reduce((sum, order) => sum + (order.total || 0), 0),
+        lastActivity: new Date()
       })
     }
+    
+    // Sort by creation date, newest first
+    customersData.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
     
     return NextResponse.json(customersData)
   } catch (error) {

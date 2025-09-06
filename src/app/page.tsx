@@ -19,6 +19,7 @@ import type { Product } from '@/lib/types';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useProductStore } from '@/lib/productStore';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import MixedProductGrid from '@/components/MixedProductGrid';
 
 
 const topCategories = [
@@ -28,13 +29,13 @@ const topCategories = [
   { name: 'Home & Kitchen', href: '/search?category=Home', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Home_Kitchen_W.avif', dataAiHint: 'modern kitchen' },
   { name: 'Personal Care', href: '/search?category=Ayurvedic&subcategory=Personal-Care', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/PersonalCare.avif', dataAiHint: 'personal care' },
   { name: 'Electronics', href: '/search?category=Tech', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Electronics_W.avif', dataAiHint: 'electronic gadgets' },
-  { name: 'Corporate Gifting', href: '/search?category=Home', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Corporate_Gifting_250x250px_2.avif', dataAiHint: 'corporate gifts' },
+  { name: 'Household', href: '/search?category=Home', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Corporate_Gifting_250x250px_2.avif', dataAiHint: 'household items' },
   { name: 'Custom Print Products', href: '/search', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Custom_Print_250x250px.avif', dataAiHint: 'custom printing' },
   { name: 'Food & Drinks', href: '/search?category=Food', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Food_Drinks_W.avif', dataAiHint: 'food and drinks' },
 ];
 
 
-const filterCategories = ['All', 'Tech', 'Home', 'Ayurvedic'];
+const filterCategories = ['All', 'Electronics', 'Home', 'Ayurvedic'];
 const PRODUCTS_TO_SHOW = 10;
 
 export default function Home() {
@@ -42,14 +43,33 @@ export default function Home() {
   const [visibleCount, setVisibleCount] = useState(PRODUCTS_TO_SHOW);
   const [selectedCategory, setSelectedCategory] = useState('All');
 
-  const techDeals = useMemo(() => products.filter(p => p.category === 'Tech' && p.price.discounted && p.quantity > 0).slice(0, 8), [products]);
-  const homeDeals = useMemo(() => products.filter(p => p.category === 'Home' && p.price.discounted && p.quantity > 0).slice(0, 8), [products]);
-  const ayurvedicDeals = useMemo(() => products.filter(p => p.category === 'Ayurvedic' && p.price.discounted && p.quantity > 0).slice(0, 8), [products]);
+
+  
+  const techDeals = useMemo(() => {
+    const discounted = products.filter(p => (p.category === 'Tech' || p.category === 'Electronics') && p.price.discounted && p.quantity > 0);
+    const regular = products.filter(p => (p.category === 'Tech' || p.category === 'Electronics') && !p.price.discounted && p.quantity > 0);
+    return [...discounted, ...regular].slice(0, 8);
+  }, [products]);
+  
+  const homeDeals = useMemo(() => {
+    const discounted = products.filter(p => p.category === 'Home' && p.price.discounted && p.quantity > 0);
+    const regular = products.filter(p => p.category === 'Home' && !p.price.discounted && p.quantity > 0);
+    return [...discounted, ...regular].slice(0, 8);
+  }, [products]);
+  
+  const ayurvedicDeals = useMemo(() => {
+    const discounted = products.filter(p => p.category === 'Ayurvedic' && p.price.discounted && p.quantity > 0);
+    const regular = products.filter(p => p.category === 'Ayurvedic' && !p.price.discounted && p.quantity > 0);
+    return [...discounted, ...regular].slice(0, 8);
+  }, [products]);
 
   const filteredProducts = useMemo(() => {
     const inStockProducts = products.filter(p => p.quantity > 0);
     if (selectedCategory === 'All') {
       return inStockProducts;
+    }
+    if (selectedCategory === 'Electronics') {
+      return inStockProducts.filter(p => p.category === 'Electronics' || p.category === 'Tech');
     }
     return inStockProducts.filter(p => p.category === selectedCategory);
   }, [selectedCategory, products]);
@@ -86,7 +106,7 @@ export default function Home() {
               "@type": "Store",
               "name": "ShopWave",
               "description": "Premium online shopping for tech accessories, home essentials & ayurvedic products",
-              "url": "https://shopwave.com",
+              "url": "https://shopwave.dhanbyte.me",
               "telephone": "+91-91574-99884",
               "address": {
                 "@type": "PostalAddress",
@@ -154,6 +174,8 @@ export default function Home() {
             </Link>
         </div>
       </section>
+      
+
       
       <section>
         <h2 className="text-2xl font-bold mb-4 text-center">Top Offers</h2>

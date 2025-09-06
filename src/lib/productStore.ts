@@ -2,11 +2,11 @@
 'use client'
 import { create } from 'zustand'
 import type { Product } from './types'
-import { AYURVEDIC_PRODUCTS } from './sampleData'
+import { AYURVEDIC_PRODUCTS } from './data/ayurvedic'
 import { HOME_PRODUCTS } from './data/home'
 import { TECH_PRODUCTS } from './data/tech'
 
-const ALL_SAMPLE_PRODUCTS = [...AYURVEDIC_PRODUCTS, ...HOME_PRODUCTS, ...TECH_PRODUCTS];
+const ALL_SAMPLE_PRODUCTS = [...TECH_PRODUCTS, ...AYURVEDIC_PRODUCTS, ...HOME_PRODUCTS];
 
 type ProductState = {
   products: Product[]
@@ -35,25 +35,55 @@ export const useProductStore = create<ProductState>()((set, get) => ({
     set({ isLoading: true });
     
     try {
-      // Try to fetch from MongoDB API first
-      const response = await fetch('/api/products');
-      if (response.ok) {
-        const result = await response.json();
-        const products = result.data || [];
-        
-        if (products.length > 0) {
-          console.log(`Successfully loaded ${products.length} products from MongoDB`);
-          set({ products, isLoading: false, initialized: true });
-          return;
-        }
+      // Fetch from all category APIs
+      const [techRes, ayurvedicRes, homeRes, mongoRes] = await Promise.all([
+        fetch('/api/products/tech'),
+        fetch('/api/products/ayurvedic'),
+        fetch('/api/products/home'),
+        fetch('/api/products')
+      ]);
+      
+      let allProducts = [];
+      
+      // Add tech products
+      if (techRes.ok) {
+        const techData = await techRes.json();
+        allProducts.push(...(techData.data || []));
       }
+      
+      // Add ayurvedic products
+      if (ayurvedicRes.ok) {
+        const ayurvedicData = await ayurvedicRes.json();
+        allProducts.push(...(ayurvedicData.data || []));
+      }
+      
+      // Add home products
+      if (homeRes.ok) {
+        const homeData = await homeRes.json();
+        allProducts.push(...(homeData.data || []));
+      }
+      
+      // Add MongoDB products
+      if (mongoRes.ok) {
+        const mongoData = await mongoRes.json();
+        allProducts.push(...(mongoData.data || []));
+      }
+      
+      // Sort products by latest (newest first)
+      allProducts.sort((a, b) => {
+        const dateA = new Date(a.createdAt || a.updatedAt || Date.now());
+        const dateB = new Date(b.createdAt || b.updatedAt || Date.now());
+        return dateB.getTime() - dateA.getTime();
+      });
+      
+      console.log(`Successfully loaded ${allProducts.length} products from all sources`);
+      set({ products: allProducts, isLoading: false, initialized: true });
+      
     } catch (error) {
-      console.error("Error fetching products from MongoDB:", error);
+      console.error("Error fetching products:", error);
+      // Fallback to sample data if all APIs fail
+      set({ products: ALL_SAMPLE_PRODUCTS, isLoading: false, initialized: true });
     }
-    
-    // Fallback to sample data if API fails or returns no products
-    console.log('Using sample data as fallback');
-    set({ products: ALL_SAMPLE_PRODUCTS, isLoading: false, initialized: true });
   },
 
   getProduct: (id: string) => {
@@ -165,20 +195,8 @@ export const useProductStore = create<ProductState>()((set, get) => ({
   },
 
   refetch: async () => {
-    set({ isLoading: true });
-    try {
-      const response = await fetch('/api/products');
-      if (response.ok) {
-        const result = await response.json();
-        const products = result.data || [];
-        set({ products, isLoading: false });
-      } else {
-        set({ isLoading: false });
-      }
-    } catch (error) {
-      console.error("Error refetching products:", error);
-      set({ isLoading: false });
-    }
+    set({ isLoading: true, initialized: false });
+    await get().init();
   },
 }));
 

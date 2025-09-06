@@ -16,21 +16,24 @@ import { useNotificationStore } from '@/lib/notificationStore'
 import { BellRing, Check } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
-export default function ProductCard({ p, suggest }: { p: Product; suggest?: any[] }) {
+export default function ProductCard({ p, product, suggest }: { p?: Product; product?: Product; suggest?: any[] }) {
+  const productData = p || product;
+  if (!productData) return null;
+  
   const { add } = useCart()
   const { user } = useAuth()
   const { toast } = useToast()
   const router = useRouter();
   const { addNotification, hasNotification } = useNotificationStore()
-  const price = p.price.discounted ?? p.price.original
+  const price = productData.price.discounted ?? productData.price.original
   
   const handleAddToCart = () => {
     if (!user) {
       toast({ title: "Login Required", description: "Please login to add items to cart", variant: "destructive" });
       return;
     }
-    add(user.id, { id: p.id, qty: 1, price, name: p.name, image: p.image });
-    toast({ title: "Added to Cart", description: `${p.name} has been added to your cart.` });
+    add(user.id, { id: productData.id, qty: 1, price, name: productData.name, image: productData.image });
+    toast({ title: "Added to Cart", description: `${productData.name} has been added to your cart.` });
   };
 
   const handleNotifyMe = () => {
@@ -38,9 +41,9 @@ export default function ProductCard({ p, suggest }: { p: Product; suggest?: any[
       toast({ title: "Login Required", description: "Please login to get notifications", variant: "destructive" });
       return;
     }
-    if (!hasNotification(p.id)) {
-      addNotification(user.id, p.id);
-      toast({ title: "You're on the list!", description: `We'll notify you when ${p.name} is back in stock.` });
+    if (!hasNotification(productData.id)) {
+      addNotification(user.id, productData.id);
+      toast({ title: "You're on the list!", description: `We'll notify you when ${productData.name} is back in stock.` });
     }
   };
 
@@ -52,16 +55,16 @@ export default function ProductCard({ p, suggest }: { p: Product; suggest?: any[
       className="card p-2 flex flex-col group"
     >
       <div className="relative">
-        <Link href={`/product/${p.slug}`}>
+        <Link href={`/product/${productData.slug}`}>
           <div className="relative w-full h-32 overflow-hidden">
             <Image
-              src={p.image}
-              alt={p.name}
+              src={productData.image}
+              alt={productData.name}
               fill
               sizes="(max-width: 768px) 50vw, (max-width: 1200px) 20vw, 15vw"
               className="rounded-lg object-cover transform transition-transform duration-300 group-hover:scale-105"
             />
-             {p.quantity === 0 && (
+             {productData.quantity === 0 && (
                 <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
                     <span className="text-white text-xs font-bold bg-black/50 px-2 py-1 rounded-full">OUT OF STOCK</span>
                 </div>
@@ -69,24 +72,24 @@ export default function ProductCard({ p, suggest }: { p: Product; suggest?: any[
           </div>
         </Link>
         <div className="absolute right-1 top-1">
-          <WishlistButton id={p.id} />
+          <WishlistButton id={productData.id} />
         </div>
       </div>
       <div className="flex-grow flex flex-col pt-2 px-1">
-        <Link href={`/product/${p.slug}`} className="flex-grow">
-          <div className="line-clamp-2 h-9 text-sm font-medium">{p.name}</div>
-          <RatingStars value={p.ratings?.average ?? 0} />
+        <Link href={`/product/${productData.slug}`} className="flex-grow">
+          <div className="line-clamp-2 h-9 text-sm font-medium">{productData.name}</div>
+          <RatingStars value={productData.ratings?.average ?? 0} />
           <div className="mt-1">
-            <PriceTag original={p.price.original} discounted={p.price.discounted} />
+            <PriceTag original={productData.price.original} discounted={productData.price.discounted} />
           </div>
         </Link>
         <div className="mt-2">
-            {p.quantity > 0 ? (
+            {productData.quantity > 0 ? (
                 <Button onClick={handleAddToCart} size="sm" className="w-full h-9">
                     Add to Cart
                 </Button>
             ) : (
-                hasNotification(p.id) ? (
+                hasNotification(productData.id) ? (
                     <Button size="sm" className="w-full h-9" disabled>
                         <Check className="h-4 w-4 mr-2" />
                         We'll Notify You

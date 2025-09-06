@@ -1,8 +1,12 @@
 import { MetadataRoute } from 'next'
-import { getDatabase } from '@/lib/db'
+import { TECH_PRODUCTS } from '@/lib/data/tech'
+import { HOME_PRODUCTS } from '@/lib/data/home'
+import { AYURVEDIC_PRODUCTS } from '@/lib/data/ayurvedic'
+import { POOJA_PRODUCTS } from '@/lib/data/pooja'
+import { FOOD_PRODUCTS } from '@/lib/data/food'
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://shopwave.com'
+export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = 'https://shopwave.dhanbyte.me'
   
   // Static pages
   const staticPages = [
@@ -16,68 +20,99 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/search`,
       lastModified: new Date(),
       changeFrequency: 'daily' as const,
-      priority: 0.8,
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/search?sort=popular`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/search?category=Tech`,
       lastModified: new Date(),
-      changeFrequency: 'daily' as const,
+      changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     {
       url: `${baseUrl}/search?category=Home`,
       lastModified: new Date(),
-      changeFrequency: 'daily' as const,
+      changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     {
       url: `${baseUrl}/search?category=Ayurvedic`,
       lastModified: new Date(),
-      changeFrequency: 'daily' as const,
+      changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/contact`,
+      url: `${baseUrl}/search?category=Pooja`,
       lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.5,
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
     },
     {
-      url: `${baseUrl}/faq`,
+      url: `${baseUrl}/search?category=Food%20%26%20Drinks`,
       lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.5,
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    // Subcategory pages
+    {
+      url: `${baseUrl}/search?category=Home&subcategory=Kitchenware`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
     },
     {
-      url: `${baseUrl}/shipping-policy`,
+      url: `${baseUrl}/search?category=Home&subcategory=Bathroom-Accessories`,
       lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.3,
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
     },
     {
-      url: `${baseUrl}/return-policy`,
+      url: `${baseUrl}/search?category=Tech&subcategory=Accessories`,
       lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.3,
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    },
+    // Search queries
+    {
+      url: `${baseUrl}/search?q=mobile`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/search?q=fan`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/search?q=kitchen`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
     },
   ]
 
-  try {
-    // Dynamic product pages
-    const db = await getDatabase()
-    const products = await db.collection('products').find({ status: 'active' }).toArray()
-    
-    const productPages = products.map((product) => ({
-      url: `${baseUrl}/product/${product.slug}`,
-      lastModified: product.updatedAt || product.createdAt || new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.7,
-    }))
+  // Product pages
+  const allProducts = [
+    ...TECH_PRODUCTS,
+    ...HOME_PRODUCTS,
+    ...AYURVEDIC_PRODUCTS,
+    ...POOJA_PRODUCTS,
+    ...FOOD_PRODUCTS,
+  ]
 
-    return [...staticPages, ...productPages]
-  } catch (error) {
-    console.error('Error generating sitemap:', error)
-    // Return static pages only if database is not available
-    return staticPages
-  }
+  const productPages = allProducts.map((product) => ({
+    url: `${baseUrl}/product/${product.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
+  }))
+
+  return [...staticPages, ...productPages]
 }

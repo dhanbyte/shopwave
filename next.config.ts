@@ -1,6 +1,8 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
+  outputFileTracingRoot: __dirname,
+  allowedDevOrigins: ['192.168.1.5:3000'],
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -25,6 +27,10 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: '**.imagekit.io'
+      },
+      {
+        protocol: 'https',
+        hostname: 'via.placeholder.com'
       }
     ]
   },

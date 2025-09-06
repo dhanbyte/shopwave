@@ -1,4 +1,3 @@
-
 'use client'
 import { useMemo, useState, Suspense, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
@@ -33,11 +32,9 @@ function ProductDetailContent() {
   const { add } = useCart()
 
   useEffect(() => {
-    // Set to undefined initially to show loading state
     setP(undefined); 
     if (products.length > 0) {
       const foundProduct = products.find(prod => prod.slug === slug);
-      // Set to the product if found, or null if not found
       setP(foundProduct || null);
     }
   }, [slug, products]);
@@ -175,22 +172,72 @@ function ProductDetailContent() {
     )
   }
 
+  // Generate comprehensive keywords
+  const generateKeywords = (product: Product) => {
+    const keywords = [
+      product.name,
+      product.brand,
+      product.category,
+      product.subcategory,
+      'buy online',
+      'best price',
+      'ShopWave',
+      'online shopping',
+      'India',
+      ...(product.features || []),
+      ...(product.name.split(' ')),
+      `${product.brand} ${product.category}`,
+      `buy ${product.name}`,
+      `${product.name} price`,
+      `${product.name} online`,
+      `best ${product.category}`,
+      `${product.category} accessories`,
+    ].filter(Boolean).join(', ');
+    return keywords;
+  };
+
   return (
     <>
       <Head>
-        <title>{p.name} - Buy Online at ShopWave</title>
-        <meta name="description" content={p.shortDescription || p.description} />
-        <meta name="keywords" content={`${p.name}, ${p.brand}, ${p.category}, ${p.tags?.join(', ')}, buy online, ShopWave`} />
-        <meta property="og:title" content={`${p.name} - ShopWave`} />
-        <meta property="og:description" content={p.shortDescription || p.description} />
+        <title>{p.name} - Buy Online at Best Price | ShopWave</title>
+        <meta name="description" content={`Buy ${p.name} by ${p.brand} online at best price ₹${price}. ${p.shortDescription || p.description.substring(0, 150)}. Free shipping, easy returns, secure payment.`} />
+        <meta name="keywords" content={generateKeywords(p)} />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content={`${p.name} - Buy Online at ShopWave`} />
+        <meta property="og:description" content={`Buy ${p.name} by ${p.brand} at ₹${price}. ${p.shortDescription || p.description.substring(0, 150)}`} />
         <meta property="og:image" content={p.image} />
+        <meta property="og:image:width" content="800" />
+        <meta property="og:image:height" content="600" />
         <meta property="og:type" content="product" />
-        <meta property="product:price:amount" content={String(p.price.discounted || p.price.original)} />
-        <meta property="product:price:currency" content={p.price.currency || 'INR'} />
+        <meta property="og:url" content={`https://shopwave.dhanbyte.me/product/${p.slug}`} />
+        <meta property="og:site_name" content="ShopWave" />
+        
+        {/* Product specific */}
+        <meta property="product:price:amount" content={String(price)} />
+        <meta property="product:price:currency" content="INR" />
         <meta property="product:availability" content={p.quantity > 0 ? 'in stock' : 'out of stock'} />
         <meta property="product:brand" content={p.brand} />
         <meta property="product:category" content={p.category} />
-        <link rel="canonical" href={`https://shopwave.com/product/${p.slug}`} />
+        <meta property="product:condition" content="new" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${p.name} - ShopWave`} />
+        <meta name="twitter:description" content={`Buy ${p.name} at ₹${price}. ${p.shortDescription || p.description.substring(0, 100)}`} />
+        <meta name="twitter:image" content={p.image} />
+        
+        {/* Additional SEO */}
+        <meta name="author" content="ShopWave" />
+        <meta name="publisher" content="ShopWave" />
+        <meta name="copyright" content="ShopWave" />
+        <meta name="language" content="English" />
+        <meta name="revisit-after" content="7 days" />
+        
+        <link rel="canonical" href={`https://shopwave.dhanbyte.me/product/${p.slug}`} />
+        
+        {/* Structured Data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -199,28 +246,79 @@ function ProductDetailContent() {
               "@type": "Product",
               "name": p.name,
               "description": p.description,
-              "image": [p.image, ...(p.extraImages || [])],
+              "image": images,
               "brand": {
                 "@type": "Brand",
                 "name": p.brand
               },
               "category": p.category,
               "sku": p.sku,
+              "gtin": p.sku,
+              "mpn": p.sku,
               "offers": {
                 "@type": "Offer",
-                "price": p.price.discounted || p.price.original,
-                "priceCurrency": p.price.currency || "INR",
+                "price": price,
+                "priceCurrency": "INR",
                 "availability": p.quantity > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+                "itemCondition": "https://schema.org/NewCondition",
                 "seller": {
                   "@type": "Organization",
-                  "name": "ShopWave"
-                }
+                  "name": "ShopWave",
+                  "url": "https://shopwave.dhanbyte.me"
+                },
+                "url": `https://shopwave.dhanbyte.me/product/${p.slug}`,
+                "priceValidUntil": new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
               },
               "aggregateRating": p.ratings ? {
                 "@type": "AggregateRating",
                 "ratingValue": p.ratings.average,
-                "reviewCount": p.ratings.count
-              } : undefined
+                "reviewCount": p.ratings.count,
+                "bestRating": 5,
+                "worstRating": 1
+              } : undefined,
+              "review": p.ratings ? [{
+                "@type": "Review",
+                "reviewRating": {
+                  "@type": "Rating",
+                  "ratingValue": p.ratings.average,
+                  "bestRating": 5
+                },
+                "author": {
+                  "@type": "Person",
+                  "name": "Verified Buyer"
+                }
+              }] : undefined
+            })
+          }}
+        />
+        
+        {/* Breadcrumb Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://shopwave.dhanbyte.me"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": p.category,
+                  "item": `https://shopwave.dhanbyte.me/search?category=${p.category}`
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 3,
+                  "name": p.name,
+                  "item": `https://shopwave.dhanbyte.me/product/${p.slug}`
+                }
+              ]
             })
           }}
         />

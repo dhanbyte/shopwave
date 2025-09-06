@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getDatabase } from '@/lib/db';
+import { AYURVEDIC_PRODUCTS } from '@/lib/sampleData';
 import type { Product } from '@/lib/types';
 
 // GET all products with filtering support
@@ -23,22 +24,57 @@ export async function GET(request: Request, context?: { params?: Promise<any> })
             ];
         }
 
-        const products = await db.collection('products').find(query).toArray();
+        const mongoProducts = await db.collection('products').find(query).toArray();
+        
+        // Filter JSON products based on query
+        let jsonProducts = AYURVEDIC_PRODUCTS;
+        if (category) {
+            jsonProducts = jsonProducts.filter(p => p.category.toLowerCase() === category.toLowerCase());
+        }
+        if (search) {
+            jsonProducts = jsonProducts.filter(p => 
+                p.name.toLowerCase().includes(search.toLowerCase()) ||
+                p.description.toLowerCase().includes(search.toLowerCase())
+            );
+        }
+        
+        // Combine both sources
+        const allProducts = [...mongoProducts, ...jsonProducts];
 
         return NextResponse.json({ 
             success: true,
-            data: products,
-            count: products.length
+            data: allProducts,
+            count: allProducts.length,
+            sources: {
+                mongodb: mongoProducts.length,
+                json: jsonProducts.length
+            }
         });
     } catch (error) {
         console.error('Error fetching products from MongoDB:', error);
-        return NextResponse.json(
-            { 
-                success: false, 
-                error: 'Failed to fetch products' 
+        
+        // Fallback to JSON products only
+        let jsonProducts = AYURVEDIC_PRODUCTS;
+        if (category) {
+            jsonProducts = jsonProducts.filter(p => p.category.toLowerCase() === category.toLowerCase());
+        }
+        if (search) {
+            jsonProducts = jsonProducts.filter(p => 
+                p.name.toLowerCase().includes(search.toLowerCase()) ||
+                p.description.toLowerCase().includes(search.toLowerCase())
+            );
+        }
+        
+        return NextResponse.json({ 
+            success: true,
+            data: jsonProducts,
+            count: jsonProducts.length,
+            sources: {
+                mongodb: 0,
+                json: jsonProducts.length
             },
-            { status: 500 }
-        );
+            warning: 'MongoDB connection failed, showing JSON products only'
+        });
     }
 }
 

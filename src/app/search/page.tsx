@@ -20,12 +20,12 @@ import { useProductStore } from '@/lib/productStore';
 import LoadingSpinner from '@/components/LoadingSpinner';
 
 const techCategories = [
-  { name: 'Mobiles', href: '/search?category=Tech&subcategory=Mobiles', image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=800&auto=format&fit=crop', dataAiHint: 'smartphones gadgets' },
-  { name: 'Laptops', href: '/search?category=Tech&subcategory=Laptops', image: 'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?q=80&w=800&auto=format&fit=crop', dataAiHint: 'modern laptop' },
-  { name: 'Audio', href: '/search?category=Tech&subcategory=Audio', image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=800&auto=format&fit=crop', dataAiHint: 'headphones audio' },
-  { name: 'Cameras', href: '/search?category=Tech&subcategory=Cameras', image: 'https://images.unsplash.com/photo-1512790182412-b19e6d62bc39?q=80&w=800&auto=format&fit=crop', dataAiHint: 'dslr camera' },
-  { name: 'Wearables', href: '/search?category=Tech&subcategory=Wearables', image: 'https://images.unsplash.com/photo-1544117519-31a4b719223d?q=80&w=800&auto=format&fit=crop', dataAiHint: 'smartwatch technology' },
-  { name: 'Accessories', href: '/search?category=Tech&subcategory=Accessories', image: 'https://images.unsplash.com/photo-1620783770629-122b7f187703?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxnYWRnZXRzfGVufDB8fHx8MTc1NjYzNDQ4NXww&ixlib=rb-4.1.0&q=80&w=1080', dataAiHint: 'gadgets accessories' },
+  { name: 'Mobile Accessories', href: '/search?category=Tech&q=mobile', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/0294.webp?updatedAt=1756627296166', dataAiHint: 'mobile accessories' },
+  { name: 'Fans & Cooling', href: '/search?category=Tech&q=fan', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/12249d16-5521-4931-b03a-e672fc47fb87.webp?updatedAt=1757057794638', dataAiHint: 'cooling fans' },
+  { name: 'Audio & Headphones', href: '/search?category=Tech&q=headphone', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/79d27a5e-9a1b-4172-a0de-38b988d75132.webp?updatedAt=1757060196152', dataAiHint: 'headphones audio' },
+  { name: 'Lighting & LED', href: '/search?category=Tech&q=light', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/1_2_f01846ee-41f6-47f2-a32a-b779928bc234.avif?updatedAt=1757059018234', dataAiHint: 'led lights' },
+  { name: 'Computer Accessories', href: '/search?category=Tech&q=mouse', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/2image_316276e3-8e6e-45b7-a4e7-823700729212.webp?updatedAt=1756629696556', dataAiHint: 'computer accessories' },
+  { name: 'Power & Cables', href: '/search?category=Tech&q=cable', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/07_4a3ac08b-5f90-4f47-9c6f-a48d0999f3e7.webp?updatedAt=1756628649421', dataAiHint: 'cables power' },
 ];
 
 const homeCategories = [
@@ -138,10 +138,33 @@ function SearchContent() {
   const list = useMemo(() => filterProducts(products, opts), [products, sp])
 
   const bestSellers = useMemo(() => {
-    const bestSellerIds = ['P_HOME_KW_01', 'P_HOME_KW_02', 'P_HOME_BA_01', 'P_HOME_KW_03'];
-    return bestSellerIds
-        .map(id => products.find(p => p.id === id))
-        .filter((p): p is NonNullable<typeof p> => !!p);
+    const inStockProducts = products.filter(p => p.quantity > 0);
+    const shuffled = [...inStockProducts].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 50);
+  }, [products]);
+  
+  const mobileAccessories = useMemo(() => {
+    return products.filter(p => p.quantity > 0 && (p.name.toLowerCase().includes('mobile') || p.name.toLowerCase().includes('phone') || p.name.toLowerCase().includes('stand'))).slice(0, 8);
+  }, [products]);
+  
+  const fansAndCooling = useMemo(() => {
+    return products.filter(p => p.quantity > 0 && (p.name.toLowerCase().includes('fan') || p.name.toLowerCase().includes('cooling') || p.name.toLowerCase().includes('cooler'))).slice(0, 8);
+  }, [products]);
+  
+  const audioProducts = useMemo(() => {
+    return products.filter(p => p.quantity > 0 && (p.name.toLowerCase().includes('headphone') || p.name.toLowerCase().includes('audio') || p.name.toLowerCase().includes('speaker'))).slice(0, 8);
+  }, [products]);
+  
+  const lightingProducts = useMemo(() => {
+    return products.filter(p => p.quantity > 0 && (p.name.toLowerCase().includes('light') || p.name.toLowerCase().includes('led') || p.name.toLowerCase().includes('bulb'))).slice(0, 8);
+  }, [products]);
+  
+  const computerAccessories = useMemo(() => {
+    return products.filter(p => p.quantity > 0 && (p.name.toLowerCase().includes('mouse') || p.name.toLowerCase().includes('computer') || p.name.toLowerCase().includes('laptop'))).slice(0, 8);
+  }, [products]);
+  
+  const powerAndCables = useMemo(() => {
+    return products.filter(p => p.quantity > 0 && (p.name.toLowerCase().includes('cable') || p.name.toLowerCase().includes('adapter') || p.name.toLowerCase().includes('charger') || p.name.toLowerCase().includes('usb'))).slice(0, 8);
   }, [products]);
   
   const allCategoryLinks = [
@@ -173,7 +196,7 @@ function SearchContent() {
             />
         case 'Tech':
             return (
-                <div className="mb-8">
+                <div className="mb-8 space-y-8">
                   <CategoryHeader 
                       title="Latest in Tech"
                       description="Explore the newest gadgets and accessories to elevate your lifestyle."
@@ -186,7 +209,7 @@ function SearchContent() {
                       bannerColor="bg-blue-50"
                       buttonColor="bg-blue-600 hover:bg-blue-700"
                   />
-                  <div className="mt-8">
+                  <div>
                       <h2 className="text-2xl font-bold mb-4 text-center">Top Tech Categories</h2>
                        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 md:gap-4">
                         {techCategories.map((category) => (
@@ -206,6 +229,60 @@ function SearchContent() {
                         ))}
                       </div>
                   </div>
+                  
+                  {mobileAccessories.length > 0 && (
+                    <div>
+                      <h3 className="text-xl font-bold mb-4">Mobile Accessories</h3>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4">
+                        {mobileAccessories.map(p => <ProductCard key={p.id} p={p} />)}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {fansAndCooling.length > 0 && (
+                    <div>
+                      <h3 className="text-xl font-bold mb-4">Fans & Cooling</h3>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4">
+                        {fansAndCooling.map(p => <ProductCard key={p.id} p={p} />)}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {audioProducts.length > 0 && (
+                    <div>
+                      <h3 className="text-xl font-bold mb-4">Audio & Headphones</h3>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4">
+                        {audioProducts.map(p => <ProductCard key={p.id} p={p} />)}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {lightingProducts.length > 0 && (
+                    <div>
+                      <h3 className="text-xl font-bold mb-4">Lighting & LED</h3>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4">
+                        {lightingProducts.map(p => <ProductCard key={p.id} p={p} />)}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {computerAccessories.length > 0 && (
+                    <div>
+                      <h3 className="text-xl font-bold mb-4">Computer Accessories</h3>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4">
+                        {computerAccessories.map(p => <ProductCard key={p.id} p={p} />)}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {powerAndCables.length > 0 && (
+                    <div>
+                      <h3 className="text-xl font-bold mb-4">Power & Cables</h3>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4">
+                        {powerAndCables.map(p => <ProductCard key={p.id} p={p} />)}
+                      </div>
+                    </div>
+                  )}
                 </div>
             );
         case 'Home':

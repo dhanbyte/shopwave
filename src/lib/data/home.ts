@@ -1,4 +1,3 @@
-
 import type { Product } from '../types';
 
 export const HOME_PRODUCTS: Product[] = [
@@ -884,7 +883,500 @@ export const HOME_PRODUCTS: Product[] = [
     taxPercent: 18,
     sku: '7030a_garlic_press_1pc',
     specifications: { 'Country of Origin': 'China', 'Dimensions': '21cm x 8cm x 3.5cm' }
-  }
-];
+  },
+  
+  {
+    "id": "P_HOME_KW_26",
+    "slug": "transparent-square-plastic-food-storage-container-set-6pc",
+    "name": "Transparent Square Plastic Food Storage Container Set (6 Pc)",
+    "brand": "Tidy Table",
+    "category": "Home",
+    "subcategory": "Kitchenware",
+    "price": {
+      "original": 199,
+      "discounted": 96,
+      "currency": "₹"
+    },
+    "quantity": 100,
+    "image": "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/storage-box-03.webp?updatedAt=1757051393113",
+    "extraImages": [
+      "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/d0175dd7-ff12-4f7b-b43d-91ff58428093.webp?updatedAt=1757051393067",
+      "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/storage-box-01.webp?updatedAt=1757051393315",
+      "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/storage-box-04.webp?updatedAt=1757051393219",
+      "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/storage-box-02.webp?updatedAt=1757051393196"
+    ],
+    "description": "This 6-piece set of transparent food storage containers is a versatile and smart solution for organizing your kitchen, pantry, or refrigerator. Each container is crafted from high-quality food-grade plastic and comes with a snug-fit white lid that helps retain freshness and prevent spillage. The stackable square design ensures maximum space utilization, whether in your modular kitchen drawer, shelf, or fridge.",
+    "shortDescription": "Premium 6-Piece Transparent Square Plastic Food Storage Container Set with Airtight White Lids",
+    "features": [
+      "6 matching square containers with airtight lids",
+      "Transparent body for quick content identification",
+      "Stackable design optimizes storage space",
+      "BPA-free, food-safe plastic construction",
+      "Spill-proof lids to prevent leakage"
+    ],
+    "ratings": {
+      "average": 4.5,
+      "count": 9
+    },
+    "taxPercent": 18,
+    "sku": "12352_trans_pla_food_storage_container_6pc",
+    "specifications": {
+      "Country of Origin": "India",
+      "Dimensions": "12cm x 10cm x 18cm",
+      "Material": "High-quality, BPA-free Plastic",
+      "Weight": "352g"
+    }
+  },
+  {
+    "id": "P_HOME_KW_27",
+    "slug": "foldable-non-slip-heat-resistant-hotmat",
+    "name": "Foldable Non-Slip Heat-Resistant Hotmat for Kitchen – Compact and Durable",
+    "brand": "Jiaqi",
+    "category": "Home",
+    "subcategory": "Kitchenware",
+    "price": {
+      "original": 79,
+      "discounted": 29,
+      "currency": "₹"
+    },
+    "quantity": 100,
+    "image": "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/db4b8951-06a7-4f3b-8add-4017cb03ebcd.jpg?updatedAt=1757051608043",
+    "extraImages": [
+      "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/5_840d18e8-b647-49cd-89cc-524b2297d3ee.webp?updatedAt=1757051608219",
+      "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/0775.webp?updatedAt=1757051608167",
+      "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/IMG-20200818-WA0080.webp?updatedAt=1757051608338",
+      "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/2_b1a54d0b-2b7c-4538-8ff6-fc5998fac8bc.webp?updatedAt=1757051608297"
+    ],
+    "description": "This innovative utensil improves upon rigid pot mats with premium, ultra-flexible and a smart design. Save on storage space with one handy tool that protects your table or kitchen counter tops from unsightly burns. FDA food-grade silicone and stainless steel construction.",
+    "shortDescription": "Foldable Non-Slip Heat-Resistant Kitchen Hotmat",
+    "features": [
+      "Multi functional - hot pad, pot holders, drying mat, jar opener",
+      "FDA approved silicone material",
+      "Easy to wash and store",
+      "Compact foldable design",
+      "Heat resistant and non-slip"
+    ],
+    "ratings": {
+      "average": 4.2,
+      "count": 25
+    },
+    "taxPercent": 18,
+    "sku": "0775_folding_hotmat",
+    "specifications": {
+      "Country of Origin": "India",
+      "Material": "FDA food-grade silicone and stainless steel"
+    }
+  },
+  {
+    "id": "P_HOME_KW_28",
+    "slug": "customize-insulated-coffee-mug-450ml",
+    "name": "Customize Insulated Coffee Mug with Spill-Proof Lid (Approx 450ML & 1 Pc)",
+    "brand": "Tumblo",
+    "category": "Home",
+    "subcategory": "Kitchenware",
+    "price": {
+      "original": 249,
+      "discounted": 109,
+      "currency": "₹"
+    },
+    "quantity": 100,
+    "image": "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/02_946a2ee0-1cdb-4e24-b5c7-50a73d52b680.webp?updatedAt=1757051972648",
+    "extraImages": [
+      "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/07_d1c79bc9-297e-4cc2-ba48-d16e219012fe.webp?updatedAt=1757051972727",
+      "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/01_ca7d4337-c9c7-4f32-8cc0-d173bf6d5cfd.webp?updatedAt=1757051972666",
+      "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/06_d5efd1d6-ec78-4030-890e-5e5f0137af6b.webp?updatedAt=1757051972847",
+      "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/01_fde3cd4d-cda0-4221-bdc1-bbad0c41c710.webp?updatedAt=1757051972723"
+    ],
+    "description": "Enjoy your favorite beverages in style with the approx 450ml Insulated Coffee Mug. Designed for both function and fashion, this mug features a double-wall construction that helps retain temperature—keeping drinks hot or cold longer. The compact design includes a comfortable handle and a spill-proof lid.",
+    "shortDescription": "Approx 450ml Insulated Coffee Mug with Spill-Proof Lid – Double Wall Travel Cup",
+    "features": [
+      "Double Wall Insulation",
+      "Premium Plastic + Metal Build",
+      "Spill-Proof Lid",
+      "Ergonomic Handle",
+      "Stylish Finish with beige base accent"
+    ],
+    "ratings": {
+      "average": 4.3,
+      "count": 47
+    },
+    "taxPercent": 18,
+    "sku": "11914_insulated_coffee_mug",
+    "specifications": {
+      "Country of Origin": "China",
+      "Dimensions": "13cm x 12cm x 9cm",
+      "Material": "Food-grade Plastic Body + Stainless Steel Inner",
+      "Capacity": "Approx 450ml",
+      "Weight": "217g"
+    }
+  },
+  {
+    "id": "P_HOME_KW_29",
+    "slug": "6-layer-foldable-shoe-rack",
+    "name": "6 Layer Foldable Shoe Rack, Portable Storage Organizer for Home & Office",
+    "brand": "VoltDesk",
+    "category": "Home",
+    "subcategory": "Kitchenware",
+    "price": {
+      "original": 499,
+      "discounted": 205,
+      "currency": "₹"
+    },
+    "quantity": 100,
+    "image": "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/05_b6afbf03-40a9-4f8e-998d-36c27e5bd9c2.webp?updatedAt=1757052460798",
+    "extraImages": [
+      "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/05_56a05da0-351f-498a-b1a1-1ef8f3d8b188.webp?updatedAt=1757052460820",
+      "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/04_d071051a-85ea-4c84-bf18-a707984cea36.webp?updatedAt=1757052460919",
+      "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/03_e0157ff2-bc14-41a6-99a1-bf948963afb2.webp?updatedAt=1757052460947",
+      "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/08_11e041d4-1e16-4f4d-ba5e-e2f3cbf18f98.webp?updatedAt=1757052460932"
+    ],
+    "description": "MULTIFUNCTIONAL: In addition to easy storage of a variety of shoes, this shoe rack can also be used as a storage rack in the living room, bedroom to store books, mobile phones, keys, toys, etc. EASY TO INSTALL: Very easy to assemble. Installation can be finished without tools.",
+    "shortDescription": "6 Layer Foldable Shoe Rack, Portable Storage Organizer for Home & Office",
+    "features": [
+      "Multifunctional storage solution",
+      "Easy to install without tools",
+      "Easy to assemble and clean",
+      "Space saving design",
+      "Multi-layered shoe shelf with ample storage"
+    ],
+    "ratings": {
+      "average": 4.1,
+      "count": 43
+    },
+    "taxPercent": 18,
+    "sku": "9054_6_layer_shoe_rack_77cm",
+    "specifications": {
+      "Country of Origin": "India",
+      "Dimensions": "29cm x 24cm x 8cm",
+      "Weight": "931g",
+      "Height": "77cm"
+    }
+  },
+  {
+    "id": "P_HOME_KW_30",
+    "slug": "stainless-steel-tea-filter-infuser-mesh-ball",
+    "name": "Stainless Steel Spice Tea Filter Herbs Locking Infuser Mesh Ball",
+    "brand": "Vastate",
+    "category": "Home",
+    "subcategory": "Kitchenware",
+    "price": {
+      "original": 149,
+      "discounted": 77,
+      "currency": "₹"
+    },
+    "quantity": 100,
+    "image": "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/04_771677df-6814-4b01-bce0-383ec3dbb91b.webp?updatedAt=1757052856992",
+    "extraImages": [
+      "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/08_fdcfb65f-511b-4dca-9321-a565df62760e.jpg?updatedAt=1757052856449",
+      "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/03_6d7959fd-30a3-4a66-b327-d90b14a8b1ac.webp?updatedAt=1757052856908",
+      "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/01_70c471e4-13a9-4eb2-8535-4d5a88e4cdf8.webp?updatedAt=1757052856882",
+      "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/06_7b1439b6-f819-4b1e-bb85-0c04aee4e641.webp?updatedAt=1757052856917"
+    ],
+    "description": "Cute small mesh style filter system that makes it perfect to be used with loose tea leaves, green tea etc to brew them quickly and easily. Could filter residue, coffee particles, ingredient, hot pot conveniently. Easily clamps tight to keep tea or spices secure.",
+    "shortDescription": "Stainless Steel Spice Tea Filter Herbs Locking Infuser Mesh Ball",
+    "features": [
+      "Sturdy clamp holds ball together",
+      "Chain to suspend into hot beverage",
+      "Ideal for spices or loose leaf tea",
+      "Great for hot or cold tea",
+      "Easy to clean and use"
+    ],
+    "ratings": {
+      "average": 4.1,
+      "count": 21
+    },
+    "taxPercent": 12,
+    "sku": "2861_big_ss_easy_tea_filter",
+    "specifications": {
+      "Country of Origin": "China",
+      "Dimensions": "5cm x 6cm x 8cm",
+      "Material": "Stainless Steel",
+      "Weight": "30g"
+    }
+  },
+  {
+    "id": "P_HOME_KW_31",
+    "slug": "round-silicone-foldable-strainer",
+    "name": "Round Sili Strain used in all kinds of household and official kitchen purposes as a Foldable utensil",
+    "brand": "Vastate",
+    "category": "Home",
+    "subcategory": "Kitchenware",
+    "price": {
+      "original": 199,
+      "discounted": 111,
+      "currency": "₹"
+    },
+    "quantity": 100,
+    "image": "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/06_f94c048d-c449-47fd-8fd9-477273941999.webp?updatedAt=1757053046080",
+    "extraImages": [
+      "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/02_c513f07a-3c2e-47b5-b467-fa753a2b27be.webp?updatedAt=1757053046250",
+      "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/07_7156692f-0cfe-4a37-8d68-3f9b18b57a2e.webp?updatedAt=1757053046286",
+      "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/01_97425e2c-d6a4-494c-92e4-9d563fb34dff.webp?updatedAt=1757053046302",
+      "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/05_5862859f-eabd-4d38-86b7-ebaf66091d33.webp?updatedAt=1757053046315"
+    ],
+    "description": "Round Sili Strain used in all kinds of household and official purposes as a Foldable utensil. Its design is very ease going and very handy in order to use it clearly without any problem or facing any disadvantage. It is made under the consideration of users concern, which makes this product safe while using it.",
+    "shortDescription": "Round Sili Strain used in all kinds of household and official kitchen purposes as a Foldable utensil",
+    "features": [
+      "Safe to use and handle the strain",
+      "Light weighted and easy to carry",
+      "Simple to use it anywhere",
+      "Easy start and stop mechanism",
+      "Foldable design for space saving"
+    ],
+    "ratings": {
+      "average": 4.1,
+      "count": 21
+    },
+    "taxPercent": 18,
+    "sku": "2712_round_sili_strainer",
+    "specifications": {
+      "Country of Origin": "China",
+      "Dimensions": "30cm x 24cm x 3cm",
+      "Material": "Round Sili Strain",
+      "Weight": "145g"
+    }
+  },
+  {
+  id: 'P_HOME_KW_31',
+  slug: 'round-sili-strain-foldable-kitchen-utensil',
+  name: 'Round Sili Strain used in all kinds of household and official kitchen purposes as a Foldable utensil.',
+  brand: 'Vastate',
+  category: 'Home',
+  subcategory: 'Kitchenware',
+  price: { original: 199, discounted: 111, currency: '₹' },
+  quantity: 100,
+  image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/06_f94c048d-c449-47fd-8fd9-477273941999.webp?updatedAt=1757053046080',
+  extraImages: [
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/02_c513f07a-3c2e-47b5-b467-fa753a2b27be.webp?updatedAt=1757053046250',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/07_7156692f-0cfe-4a37-8d68-3f9b18b57a2e.webp?updatedAt=1757053046286',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/01_97425e2c-d6a4-494c-92e4-9d563fb34dff.webp?updatedAt=1757053046302',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/05_5862859f-eabd-4d38-86b7-ebaf66091d33.webp?updatedAt=1757053046315'
+  ],
+  description: 'Round Sili Strain used in all kinds of household and official purposes as a Foldable utensil. Its design is very ease going and very handy in order to use it clearly without any problem.',
+  shortDescription: 'Foldable silicone strainer for household and kitchen purposes.',
+  features: ['Safe to use and handle the strain', 'Light weighted and easy to carry', 'Simple to use it anywhere', 'Easy start and stop mechanism'],
+  ratings: { average: 4.6, count: 21 },
+  taxPercent: 18,
+  sku: '2712_round_sili_strainer',
+  specifications: { 'Country of Origin': 'China', 'Dimensions': '30cm x 24cm x 3cm', 'Weight': '145g' }
+},
+{
+  id: 'P_HOME_KW_32',
+  slug: 'supermom-adjustable-plastic-slicer',
+  name: 'Supermom Adjustable Plastic Slicer, 1-Piece, Black / Silver',
+  brand: 'Supermom',
+  category: 'Home',
+  subcategory: 'Kitchenware',
+  price: { original: 320, discounted: 143, currency: '₹' },
+  quantity: 100,
+  image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/Slicer-03_e1cc5383-f73c-4b4c-be6e-66ec9d2212a0.webp?updatedAt=1757053183823',
+  extraImages: [
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/Slicer-02_6d4ae714-4680-48c1-9ba3-30c41c29f182.webp?updatedAt=1757053183898',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/Slicer-02_6d4ae714-4680-48c1-9ba3-30c41c29f182(1).webp?updatedAt=1757053183926',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/Slicer-07.jpg?updatedAt=1757053183815',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/Slicer-04_df5f5125-233f-4716-a179-8ada1b0f507d.webp?updatedAt=1757053184035'
+  ],
+  description: 'The adjustable slicer gives the perfect slicing experience with utmost persistence. It cuts potatoes, onions, carrots, radish, cabbages, cucumber etc. The tempered stainless steel material adds strength and life to the cutting edge.',
+  shortDescription: 'Adjustable slicer with tempered stainless steel cutting edge.',
+  features: ['Auto knob cuts 1mm to 5 mm', 'Wavy laser edge for easy & smooth cutting', 'Tempered stainless steel', 'Ergonomic design'],
+  ratings: { average: 4.7, count: 23 },
+  taxPercent: 18,
+  sku: '8120_supermom_adjustable_slicer',
+  specifications: { 'Country of Origin': 'India', 'Dimensions': '32cm x 14cm x 5cm', 'Weight': '321g' }
+},
+{
+  id: 'P_HOME_KW_33',
+  slug: 'foldable-strainer-chef-basket',
+  name: 'Foldable Strainer Chef Basket',
+  brand: 'Vastate',
+  category: 'Home',
+  subcategory: 'Kitchenware',
+  price: { original: 652, discounted: 155, currency: '₹' },
+  quantity: 100,
+  image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/300-30003_b3f1da46-5f4f-49e5-bf52-cbfd371c59d8.webp?updatedAt=1757053396031',
+  extraImages: [
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/300-30004_16bb9c5c-872e-4500-82f0-d94cef9f620d.jpg?updatedAt=1757053396117',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/300-30001_48a8f441-1b4f-4086-9da5-7b76798c7dd6.jpg?updatedAt=1757053396187',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/61CXEsSiZQL._SL1100.webp?updatedAt=1757053396270',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/717bKhuvksL._SL1001_5abb4d71-bc4f-4aea-9bcf-ab4377e7b2bc.webp?updatedAt=1757053396381'
+  ],
+  description: '12 in 1 Chef Basket Foldable Strainer Kitchen Tool. Made of Stainless Steel material, which won\'t be rusted if you drying in after washing.',
+  shortDescription: 'Foldable and easy to store 12 in 1 Chef Basket.',
+  features: ['Foldable and easy to store', 'Easy to clean', '12 in 1 Chef Basket', 'Made of Stainless Steel material'],
+  ratings: { average: 4.6, count: 21 },
+  taxPercent: 18,
+  sku: '0139_chef_basket',
+  specifications: { 'Country of Origin': 'China' }
+},
+{
+  id: 'P_HOME_KW_34',
+  slug: 'big-mesh-strainer-with-handle-stainless-steel',
+  name: 'Big Mesh Strainer With Handle Stainless Steel Oil Straine, Mesh Sieve Strainer(1 Pc)',
+  brand: 'Vastate',
+  category: 'Home',
+  subcategory: 'Kitchenware',
+  price: { original: 199, discounted: 49, currency: '₹' },
+  quantity: 100,
+  image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/03_85a51842-069a-4f87-8ef2-002254a476e5.webp?updatedAt=1757053645972',
+  extraImages: [
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/02_4d14a279-a4a1-4883-8b35-e4d50ed2d78c.jpg?updatedAt=1757053646016',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/04_19d0a30c-661b-401a-a6d7-9e99fc1a7e55.webp?updatedAt=1757053645984',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/41b32c9d-9a3b-4405-af4f-c2b95a312f5f.jpg?updatedAt=1757053645830',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/fd1527c8-5325-45f3-ba21-70e895845e3f.webp?updatedAt=1757053645840'
+  ],
+  description: 'Stainless Steel Premium Mesh Strainers Made of stainless steel, rust resistant and lightweight, but stronger than aluminum and is long-lasting. Fine sieve strainer.',
+  shortDescription: 'Fine Mesh Strainer with Handle for oil straining and filtering.',
+  features: ['Made of stainless steel, rust resistant', 'Ergonomic handle for fast separation', 'Fine mesh design', 'Can be used to separate oil/foam/filter juice'],
+  ratings: { average: 4.8, count: 27 },
+  taxPercent: 18,
+  sku: '10099_big_ss_mesh_strainer_1pc',
+  specifications: { 'Country of Origin': 'China', 'Dimensions': '31cm x 16cm x 5cm', 'Weight': '75g' }
+},
+{
+  id: 'P_HOME_KW_35',
+  slug: 'stainless-steel-colander-with-handle-large-metal-mesh',
+  name: 'Stainless Steel Colander with Handle - Large Metal Mesh Basket Strainer (1 pc)',
+  brand: 'Vastate',
+  category: 'Home',
+  subcategory: 'Kitchenware',
+  price: { original: 399, discounted: 154, currency: '₹' },
+  quantity: 100,
+  image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/06_dfa960fe-ef63-4d01-a06a-058b1dbc331f.webp?updatedAt=1757054285274',
+  extraImages: [
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/05_f73e2176-be6b-44c0-83ba-e85d631ec794.webp?updatedAt=1757054285468',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/66a9eefa-e8b2-4ae4-8a44-61d286a2a646_ae0e5c71-2611-4568-a8de-155babaac584.webp?updatedAt=1757054285443',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/02_0d809f58-9d5e-412c-a32d-d47f3463f6ab.webp?updatedAt=1757054285515',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/03_85a3e970-675e-4c33-b914-264b8fa3903f.webp?updatedAt=1757054285530'
+  ],
+  description: 'Big Stainless Steel Colander with Handle, Large Metal Mesh Basket Strainer for Pasta, Spaghetti, Berry, Veggies, Fruits, Kitchen Food Colander, Dishwasher Safe.',
+  shortDescription: 'Large metal mesh basket strainer for pasta and vegetables.',
+  features: ['Made of high quality stainless steel', 'Ergonomic and sturdy handle', 'Drains fast', 'Dishwasher safe'],
+  ratings: { average: 4.7, count: 10 },
+  taxPercent: 18,
+  sku: '7147_ss_big_washing_colander_1pc',
+  specifications: { 'Country of Origin': 'China', 'Dimensions': '28cm x 26cm x 17cm', 'Weight': '466g' }
+},
+{
+  id: 'P_HOME_KW_36',
+  slug: 'stainless-steel-potato-masher-pav-bhaji-wooden-handle',
+  name: 'Stainless Steel Potato Masher, Pav Bhaji Masher with wooden handle',
+  brand: 'Quickslice',
+  category: 'Home',
+  subcategory: 'Kitchenware',
+  price: { original: 140, discounted: 41, currency: '₹' },
+  quantity: 100,
+  image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/4_4706b4ab-6e7e-4c48-92db-9b715a6901b6.webp?updatedAt=1757054791713',
+  extraImages: [
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/5_ec1faaed-0ee1-4284-bb83-2b0652a7a1ee.webp?updatedAt=1757054791689',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/01_80e6d20a-b2ff-4356-aa23-ab72d3371d6f.webp?updatedAt=1757054791755',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/4a06967a-f105-4fcd-9e05-cc35df50690c.jpg?updatedAt=1757054791636',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/2_64ddd3a0-f07f-456b-8cf5-276c8c8b150b.webp?updatedAt=1757054791789'
+  ],
+  description: 'Newly designed innovative potato masher with horizontal grip and wide mashing plate, potato mashing is no more a tiresome kitchen activity. Constructed of stainless steel with a wooden handle for comfortable use.',
+  shortDescription: 'Innovative potato masher with horizontal grip and wide mashing plate.',
+  features: ['Innovative Design', 'Heavy-duty masher for soft food', 'Soft-grip handle for comfort', 'Dishwasher safe, easy to clean'],
+  ratings: { average: 4.8, count: 35 },
+  taxPercent: 12,
+  sku: '0064_paubhaji_masher',
+  specifications: { 'Country of Origin': 'India' }
+},
+{
+  id: 'P_HOME_KW_37',
+  slug: 'wooden-handle-square-stainless-steel-potato-masher',
+  name: 'Stainless Steel Potato Masher, Kitchen Tools Wooden Handle Square Stainless Steel Potato Masher (1 Pc)',
+  brand: 'Quickslice',
+  category: 'Home',
+  subcategory: 'Kitchenware',
+  price: { original: 199, discounted: 45, currency: '₹' },
+  quantity: 100,
+  image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/18_8df6458f-f740-4387-94c7-1ac040e8505d.webp?updatedAt=1757055016937',
+  extraImages: [
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/20_d3d018b1-8298-4d55-9140-a68b9747b369.webp?updatedAt=1757055017004',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/01_0d26f5d0-3e80-44c2-ab24-8ee100682305.webp?updatedAt=1757055017022',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/19_21c576b5-7603-40c3-a1ad-d66dbf8ebaf0.webp?updatedAt=1757055017038',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/a6e9bc61-fd48-46ab-84e1-713d746bc712.webp?updatedAt=1757055017143'
+  ],
+  description: 'Newly designed innovative potato masher with horizontal grip and wide mashing plate. The masher is made of stainless steel that makes it durable and ensures that it lasts for a long time even with regular use.',
+  shortDescription: 'Wooden Handle Square Stainless Steel Potato Masher.',
+  features: ['Innovative Design', 'Heavy-duty masher for soft food', 'Ergonomic Grip', 'Easy Storage with hanging hole'],
+  ratings: { average: 4.7, count: 47 },
+  taxPercent: 18,
+  sku: '10299_wooden_handle_paubhaji_masher_no2',
+  specifications: { 'Country of Origin': 'India', 'Dimensions': '17cm x 10cm x 10cm', 'Weight': '31g' }
+},
+{
+  id: 'P_HOME_KW_38',
+  slug: 'multi-crusher-grinder-cutter',
+  name: 'Multi Crusher / Grinder / Cutter',
+  brand: 'Quickslice',
+  category: 'Home',
+  subcategory: 'Kitchenware',
+  price: { original: 240, discounted: 67, currency: '₹' },
+  quantity: 100,
+  image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/4_562255a8-4f3d-4321-88e2-7593ccc14425.webp?updatedAt=1757055316393',
+  extraImages: [
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/3_932eda7d-8744-4ab8-b553-eb660f92cf8b.webp?updatedAt=1757055316435',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/0134.webp?updatedAt=1757055316550',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/5_10ede3e0-1ef7-4da7-8698-2131a27eacca.webp?updatedAt=1757055316540',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/2_06ee0cb7-fb1b-4161-bf73-3f3cec8651ae.webp?updatedAt=1757055316543'
+  ],
+  description: 'Multi Crusher are provided with 20 safety blade that makes vegetable crushing easy. This speedy chopper will help you cut veggies, fruits and herbs in JUST a MOMENT.',
+  shortDescription: 'Kitchen Multi Crusher with 20 safety blades for easy vegetable crushing.',
+  features: ['20 safety blade design', 'Easy And Fun To Use', 'Fast & easy to slice, mince and store', 'Dishwasher Safe'],
+  ratings: { average: 4.6, count: 28 },
+  taxPercent: 18,
+  sku: '0134_multi_crusher',
+  specifications: { 'Country of Origin': 'India' }
+},
+{
+  id: 'P_HOME_KW_39',
+  slug: 'small-stainless-steel-chili-corer-remover',
+  name: 'Small Stainless Steel Chili Corer Remover Kitchen Tool (1 Pc)',
+  brand: 'ToolMate Pro',
+  category: 'Home',
+  subcategory: 'Kitchenware',
+  price: { original: 199, discounted: 26, currency: '₹' },
+  quantity: 100,
+  image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/01_1da6f851-411e-4a91-b9cd-32f8857c7579.webp?updatedAt=1757056912175',
+  extraImages: [
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/04_485a6ebc-e1a4-4513-acfa-22be8087e74c.webp?updatedAt=1757056912083',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/05_3ad92970-21f8-4c8d-a4f3-919bd9072798.webp?updatedAt=1757056912376',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/7fec665e-87f5-49cd-9108-e90cfb428e2c.webp?updatedAt=1757056912299',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/02_57fbd310-cd6a-426c-94b0-c0bf7a433cfc.jpg?updatedAt=1757056912404'
+  ],
+  description: 'Chili corer remover, also known as a pepper corer, is a small, handheld kitchen tool used to remove the seeds and core from chili peppers. It can easily remove the Chili core.',
+  shortDescription: 'Small handheld tool for removing seeds and core from chili peppers.',
+  features: ['High Quality durable Steel material', 'Small Size for practical use', 'Easy to Clean and dishwasher safe', 'Suitable for Chili and strawberry core'],
+  ratings: { average: 4.8, count: 34 },
+  taxPercent: 18,
+  sku: '10098_ss_chili_corer_remover_1pc',
+  specifications: { 'Country of Origin': 'India', 'Dimensions': '14cm x 9cm x 3cm', 'Weight': '21g' }
+},
+{
+  id: 'P_HOME_KW_40',
+  slug: 'dough-cutter-tool-kitchen-dough-cutting',
+  name: 'Dough Cutter Tool Kitchen Dough Cutting Tool',
+  brand: 'ToolMate Pro',
+  category: 'Home',
+  subcategory: 'Kitchenware',
+  price: { original: 199, discounted: 90, currency: '₹' },
+  quantity: 100,
+  image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/3_768254d2-17c1-4785-8b7b-4ef528426977.webp?updatedAt=1757057059509',
+  extraImages: [
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/2_9bfd79c2-18dd-45fc-8247-ca3450d42ec5.webp?updatedAt=1757057059677',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/WhatsAppImage2022-08-17at2.00.47PM_1_26c5a8ab-2581-47ef-8339-3ba4872d917e.webp?updatedAt=1757057059662',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/6_e136b869-85ca-4f0f-aaa0-4a7acf36a807.webp?updatedAt=1757057059683',
+    'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/5_a975a59c-0f0a-45eb-af7c-b877588f0117.webp?updatedAt=1757057059779'
+  ],
+  description: 'Stainless Steel Noodle Lattice Roller 430 corrosion-resistant stainless steel does not rust. Sharp wheel 9 slices side by side wheel drive, across the board the eight uniform size noodles.',
+  shortDescription: 'Multi-purpose noodle lattice roller docker cutter for kitchen.',
+  features: ['High grade stainless steel', 'Sharp wheel 9 slices side by side', 'With hole design for wall hanging', '360-degree cut model'],
+  ratings: { average: 4.7, count: 22 },
+  taxPercent: 12,
+  sku: '2961_ss_dough_roller_cutter',
+  specifications: { 'Country of Origin': 'India', 'Dimensions': '34cm x 6cm x 6cm', 'Weight': '205g' }
+}
 
-    
+
+
+];

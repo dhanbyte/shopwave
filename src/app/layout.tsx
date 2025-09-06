@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_IN',
-    url: 'https://shopwave.com',
+    url: 'https://shopwave.dhanbyte.me',
     title: 'ShopWave - Premium Online Shopping',
     description: 'Shop premium tech accessories, home essentials & authentic ayurvedic products. Fast delivery, secure payments, easy returns.',
     siteName: 'ShopWave',
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
 const WhatsAppButton = () => {
   const whatsappUrl = `https://wa.me/919157499884?text=${encodeURIComponent("Hello! I have a question about your products.")}`;
   return (
-    <Link href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="fixed bottom-10 right-5 z-50" aria-label="Contact us on WhatsApp">
+    <Link href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="fixed bottom-10 right-5 py-10 z-50" aria-label="Contact us on WhatsApp">
        <div className="bg-green-500 text-white rounded-full p-3 shadow-lg hover:bg-green-600 transition-transform hover:scale-110">
          <FaWhatsapp size={24} aria-hidden="true" />
        </div>
@@ -55,11 +55,23 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Google Analytics */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-1S9CD9GPJS"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-1S9CD9GPJS');
+            `,
+          }}
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
         <link rel="preconnect" href="https://ik.imagekit.io" />
-        <link rel="canonical" href="https://shopwave.com" />
+        <link rel="canonical" href="https://shopwave.dhanbyte.me" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -67,11 +79,11 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "WebSite",
               "name": "ShopWave",
-              "url": "https://shopwave.com",
+              "url": "https://shopwave.dhanbyte.me",
               "description": "Premium online shopping for tech accessories, home essentials & ayurvedic products",
               "potentialAction": {
                 "@type": "SearchAction",
-                "target": "https://shopwave.com/search?q={search_term_string}",
+                "target": "https://shopwave.dhanbyte.me/search?q={search_term_string}",
                 "query-input": "required name=search_term_string"
               }
             })
