@@ -28,8 +28,6 @@ export default function AddressManager({ onBack }: { onBack: () => void }) {
     if (user) {
       try {
         await save(user.id, { ...editingAddress, ...addr });
-        // Force refresh addresses after save
-        await init(user.id);
         setShowForm(false);
         setEditingAddress(undefined);
       } catch (error) {
@@ -41,13 +39,23 @@ export default function AddressManager({ onBack }: { onBack: () => void }) {
   
   const handleSetDefault = async (addressId: string) => {
     if (user) {
+      try {
         await setDefault(user.id, addressId);
+      } catch (error) {
+        console.error('Failed to set default address:', error);
+        alert('Failed to set default address. Please try again.');
+      }
     }
   }
 
   const handleRemove = async (addressId: string) => {
-    if (user) {
+    if (user && confirm('Are you sure you want to delete this address?')) {
+      try {
         await remove(user.id, addressId);
+      } catch (error) {
+        console.error('Failed to remove address:', error);
+        alert('Failed to remove address. Please try again.');
+      }
     }
   }
 

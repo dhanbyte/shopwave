@@ -1,5 +1,5 @@
 'use client'
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { useToast } from '@/hooks/use-toast'
 
 type Address = {
@@ -20,29 +20,39 @@ const required = (s?: string) => !!(s && s.trim().length)
 export default function AddressForm({ action, initial, onCancel }: { action: (a: Omit<Address, 'id'>) => void; initial?: Partial<Address>; onCancel?: () => void }) {
   
   const [errors, setErrors] = useState<Record<string, string>>({})
-  const formRef = useRef<HTMLFormElement>(null)
   const { toast } = useToast()
+  
+  // Controlled form state
+  const [formData, setFormData] = useState({
+    fullName: initial?.fullName || '',
+    phone: initial?.phone || '',
+    pincode: initial?.pincode || '',
+    line1: initial?.line1 || '',
+    line2: initial?.line2 || '',
+    city: initial?.city || '',
+    state: initial?.state || '',
+    landmark: initial?.landmark || ''
+  })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!formRef.current) return
 
-    const formData = new FormData(formRef.current)
     const a: Omit<Address, 'id'> = {
-        fullName: formData.get('fullName') as string || '',
-        phone: formData.get('phone') as string || '',
-        pincode: formData.get('pincode') as string || '',
-        line1: formData.get('line1') as string || '',
-        line2: formData.get('line2') as string || '',
-        city: formData.get('city') as string || '',
-        state: formData.get('state') as string || '',
-        landmark: formData.get('landmark') as string || '',
-        default: true,
+        ...formData,
+        fullName: formData.fullName.trim(),
+        phone: formData.phone.replace(/\s/g, ''),
+        pincode: formData.pincode.trim(),
+        line1: formData.line1.trim(),
+        line2: formData.line2?.trim() || '',
+        city: formData.city.trim(),
+        state: formData.state.trim(),
+        landmark: formData.landmark?.trim() || '',
+        default: initial?.default || false,
     }
 
     const newErrors: Record<string, string> = {}
     if (!required(a.fullName)) newErrors.fullName = "Full name is required."
-    if (!/^[0-9]{10}$/.test(a.phone.replace(/\s/g, ''))) newErrors.phone = "Must be a valid 10-digit phone number."
+    if (!/^[0-9]{10}$/.test(a.phone)) newErrors.phone = "Must be a valid 10-digit phone number."
     if (!/^[0-9]{6}$/.test(a.pincode)) newErrors.pincode = "Must be a 6-digit pincode."
     if (!required(a.line1)) newErrors.line1 = "Building/Floor is required."
     if (!required(a.city)) newErrors.city = "City is required."
@@ -52,12 +62,13 @@ export default function AddressForm({ action, initial, onCancel }: { action: (a:
 
     if (Object.keys(newErrors).length === 0) {
       try {
-        action(a)
+        await action(a)
         toast({
           title: "Address Saved",
           description: "Your address has been saved successfully.",
         })
       } catch (error) {
+        console.error('Address save error:', error)
         toast({
           title: "Error",
           description: "Failed to save address. Please try again.",
@@ -67,13 +78,14 @@ export default function AddressForm({ action, initial, onCancel }: { action: (a:
     }
   }
 
-  const InputField = ({ name, placeholder, defaultValue, error, type = 'text' }: { name: string, placeholder: string, defaultValue?: string, error?: string, type?: string }) => (
+  const InputField = ({ name, placeholder, error, type = 'text' }: { name: string, placeholder: string, error?: string, type?: string }) => (
     <div>
       <input 
         className={`w-full rounded-lg border px-3 py-2 text-sm ${error ? 'border-red-500' : 'border-gray-300'}`} 
         placeholder={placeholder} 
         name={name}
-        defaultValue={defaultValue}
+        value={formData[name as keyof typeof formData]}
+        onChange={(e) => setFormData(prev => ({ ...prev, [name]: e.target.value }))}
         type={type} 
       />
       {error && <div className="mt-1 text-xs text-red-600">{error}</div>}
@@ -81,20 +93,20 @@ export default function AddressForm({ action, initial, onCancel }: { action: (a:
   )
 
   return (
-    <form key={initial?.id || 'new'} ref={formRef} onSubmit={handleSubmit} className="space-y-3" noValidate>
+    <form key={initial?.id || 'new'} onSubmit={handleSubmit} className="space-y-3" noValidate>
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-        <InputField name="fullName" placeholder="Full Name*" defaultValue={initial?.fullName} error={errors.fullName} />
-        <InputField name="phone" placeholder="Phone*" defaultValue={initial?.phone} error={errors.phone} type="tel" />
-        <InputField name="pincode" placeholder="Pincode (6 digits)*" defaultValue={initial?.pincode} error={errors.pincode} type="number" />
-        <InputField name="city" placeholder="City*" defaultValue={initial?.city} error={errors.city} />
+        <InputField name="fullName" placeholder="Full Name*" error={errors.fullName} />
+        <InputField name="phone" placeholder="Phone*" error={errors.phone} type="tel" />
+        <InputField name="pincode" placeholder="Pincode (6 digits)*" error={errors.pincode} type="number" />
+        <InputField name="city" placeholder="City*" error={errors.city} />
         <div className="md:col-span-2">
-          <InputField name="line1" placeholder="Building/Floor*" defaultValue={initial?.line1} error={errors.line1} />
+          <InputField name="line1" placeholder="Building/Floor*" error={errors.line1} />
         </div>
         <div className="md:col-span-2">
-          <InputField name="line2" placeholder="Street/Area (optional)" defaultValue={initial?.line2} />
+          <InputField name="line2" placeholder="Street/Area (optional)" />
         </div>
-        <InputField name="state" placeholder="State*" defaultValue={initial?.state} error={errors.state} />
-        <InputField name="landmark" placeholder="Landmark (optional)" defaultValue={initial?.landmark} />
+        <InputField name="state" placeholder="State*" error={errors.state} />
+        <InputField name="landmark" placeholder="Landmark (optional)" />
       </div>
       <div className="flex items-center gap-3 pt-2">
         <button type="submit" className="rounded-xl bg-brand px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand/90 disabled:opacity-50">Save Address</button>
