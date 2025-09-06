@@ -34,7 +34,7 @@ export async function POST(request: NextRequest, context?: { params?: Promise<an
     }
     
     const db = await getDatabase()
-    await db.collection('user_data').updateOne(
+    const result = await db.collection('user_data').updateOne(
       { userId, type },
       { 
         $set: { 
@@ -47,7 +47,9 @@ export async function POST(request: NextRequest, context?: { params?: Promise<an
       { upsert: true }
     )
     
-    return NextResponse.json({ success: true })
+    console.log('User data save result:', { userId, type, dataLength: Array.isArray(data) ? data.length : 'not array', result })
+    
+    return NextResponse.json({ success: true, saved: result.modifiedCount > 0 || result.upsertedCount > 0 })
   } catch (error) {
     console.error('Error saving user data:', error)
     return NextResponse.json({ error: 'Failed to save data' }, { status: 500 })

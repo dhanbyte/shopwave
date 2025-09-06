@@ -30,8 +30,8 @@ const AdminAuthContext = createContext<AdminAuthContextType>({
 
 // Admin credentials (in production, use environment variables or database)
 const ADMIN_CREDENTIALS = {
-  username: 'admin',
-  password: 'admin123',
+  username: 'Dhanbyte9157',
+  password: '',
   email: 'admin@shopwave.com'
 };
 

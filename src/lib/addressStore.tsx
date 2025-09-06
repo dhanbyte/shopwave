@@ -35,16 +35,23 @@ export const useAddressBook = create<AddressState>()((set, get) => ({
       const response = await fetch(`/api/user-data?userId=${userId}&type=addresses`);
       if (response.ok) {
         const serverAddresses = await response.json();
+        console.log('Loaded addresses from server:', serverAddresses);
         if (serverAddresses && Array.isArray(serverAddresses)) {
           set({ addresses: serverAddresses, isLoading: false });
           return;
         }
+      } else {
+        console.error('Failed to load addresses:', response.status, await response.text());
       }
     } catch (error) {
       console.error('Error loading addresses from server:', error);
     }
     
-    set({ addresses: [], isLoading: false });
+    // Fallback to local storage
+    const addressBook = getAddressBook();
+    const localAddresses = addressBook[userId] || [];
+    console.log('Using local addresses:', localAddresses);
+    set({ addresses: localAddresses, isLoading: false });
   },
   save: async (userId, address) => {
     const addressBook = getAddressBook();
@@ -81,13 +88,22 @@ export const useAddressBook = create<AddressState>()((set, get) => ({
     saveAddressBook(addressBook);
     
     try {
-      await fetch('/api/user-data', {
+      const response = await fetch('/api/user-data', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, type: 'addresses', data: updatedAddresses })
       });
+      const result = await response.json();
+      console.log('Address save response:', result);
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to save');
+      }
     } catch (error) {
       console.error('Error saving addresses to server:', error);
+      // Revert local changes if server save failed
+      const originalAddresses = get().addresses;
+      set({ addresses: originalAddresses });
+      throw error;
     }
     
     set({ addresses: updatedAddresses });

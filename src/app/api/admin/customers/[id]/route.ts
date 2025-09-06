@@ -1,13 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getDatabase } from '@/lib/db'
+import { ObjectId } from 'mongodb'
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const userId = params.id
     const db = await getDatabase()
     
-    // Get user basic info
-    const user = await db.collection('users').findOne({ _id: userId })
+    // Try to find user by string ID first, then by ObjectId
+    let user = await db.collection('users').findOne({ _id: userId })
+    if (!user && ObjectId.isValid(userId)) {
+      user = await db.collection('users').findOne({ _id: new ObjectId(userId) })
+    }
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 })
     }
