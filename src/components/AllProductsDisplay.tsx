@@ -1,7 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getAllProducts, getHomeProducts, getTechProducts, getAyurvedicProducts } from '@/lib/data/ProductsData';
+import { getAllProducts } from '@/lib/data/allProducts';
+import { HOME_PRODUCTS } from '@/lib/data/home';
+import { TECH_PRODUCTS } from '@/lib/data/tech';
+import { AYURVEDIC_PRODUCTS } from '@/lib/data/ayurvedic';
 import type { Product } from '@/lib/types';
 import ProductCard from './ProductCard';
 
@@ -15,17 +18,12 @@ export default function AllProductsDisplay() {
   useEffect(() => {
     const fetchAllData = async () => {
       try {
-        const [all, home, tech, ayurvedic] = await Promise.all([
-          getAllProducts(),
-          getHomeProducts(),
-          getTechProducts(),
-          getAyurvedicProducts()
-        ]);
+        const all = await getAllProducts();
         
         setAllProducts(all);
-        setHomeProducts(home);
-        setTechProducts(tech);
-        setAyurvedicProducts(ayurvedic);
+        setHomeProducts(HOME_PRODUCTS);
+        setTechProducts(TECH_PRODUCTS);
+        setAyurvedicProducts(AYURVEDIC_PRODUCTS);
       } catch (error) {
         console.error('Error fetching products:', error);
       } finally {

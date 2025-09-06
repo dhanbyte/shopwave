@@ -2,8 +2,6 @@ import { MetadataRoute } from 'next'
 import { TECH_PRODUCTS } from '@/lib/data/tech'
 import { HOME_PRODUCTS } from '@/lib/data/home'
 import { AYURVEDIC_PRODUCTS } from '@/lib/data/ayurvedic'
-import { POOJA_PRODUCTS } from '@/lib/data/pooja'
-import { FOOD_PRODUCTS } from '@/lib/data/food'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://shopwave.dhanbyte.me'
@@ -103,8 +101,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...TECH_PRODUCTS,
     ...HOME_PRODUCTS,
     ...AYURVEDIC_PRODUCTS,
-    ...POOJA_PRODUCTS,
-    ...FOOD_PRODUCTS,
   ]
 
   const productPages = allProducts.map((product) => ({
