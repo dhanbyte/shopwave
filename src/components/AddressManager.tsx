@@ -13,10 +13,11 @@ export default function AddressManager({ onBack }: { onBack: () => void }) {
   const [editingAddress, setEditingAddress] = useState<Address | undefined>(undefined)
   
   useEffect(() => {
-    if (user && !isLoading) {
+    if (user) {
+      // Use user ID for consistency
       init(user.id)
     }
-  }, [user, init, isLoading])
+  }, [user, init])
   
   useEffect(() => {
     if (!isLoading && addresses.length === 0) {

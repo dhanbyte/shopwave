@@ -39,12 +39,7 @@ export const useAddressBook = create<AddressState>()((set, get) => ({
     
     // Then try to sync with server in background
     try {
-      const response = await fetch(`/api/user-data?userId=${encodeURIComponent(userId)}&type=addresses`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await fetch(`/api/user-data?userId=${encodeURIComponent(userId)}&type=addresses`);
       
       if (response.ok) {
         const serverAddresses = await response.json();
@@ -57,7 +52,6 @@ export const useAddressBook = create<AddressState>()((set, get) => ({
         }
       }
     } catch (error) {
-      // Silently fail - we already have localStorage data loaded
       console.warn('Could not sync addresses with server:', error);
     }
   },

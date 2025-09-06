@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useToast } from '@/hooks/use-toast'
 
 type Address = {
@@ -21,33 +21,26 @@ export default function AddressForm({ action, initial, onCancel }: { action: (a:
   
   const [errors, setErrors] = useState<Record<string, string>>({})
   const { toast } = useToast()
-  
-  // Controlled form state
-  const [formData, setFormData] = useState({
-    fullName: initial?.fullName || '',
-    phone: initial?.phone || '',
-    pincode: initial?.pincode || '',
-    line1: initial?.line1 || '',
-    line2: initial?.line2 || '',
-    city: initial?.city || '',
-    state: initial?.state || '',
-    landmark: initial?.landmark || ''
-  })
+  const formRef = useRef<HTMLFormElement>(null)
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSave = async (e: React.MouseEvent) => {
     e.preventDefault()
-
+    e.stopPropagation()
+    
+    if (!formRef.current) return
+    
+    const formData = new FormData(formRef.current)
+    
     const a: Omit<Address, 'id'> = {
-        ...formData,
-        fullName: formData.fullName.trim(),
-        phone: formData.phone.replace(/\s/g, ''),
-        pincode: formData.pincode.trim(),
-        line1: formData.line1.trim(),
-        line2: formData.line2?.trim() || '',
-        city: formData.city.trim(),
-        state: formData.state.trim(),
-        landmark: formData.landmark?.trim() || '',
-        default: initial?.default || false,
+        fullName: (formData.get('fullName') as string || '').trim(),
+        phone: (formData.get('phone') as string || '').replace(/\s/g, ''),
+        pincode: (formData.get('pincode') as string || '').trim(),
+        line1: (formData.get('line1') as string || '').trim(),
+        line2: (formData.get('line2') as string || '').trim(),
+        city: (formData.get('city') as string || '').trim(),
+        state: (formData.get('state') as string || '').trim(),
+        landmark: (formData.get('landmark') as string || '').trim(),
+        default: initial?.default || true,
     }
 
     const newErrors: Record<string, string> = {}
@@ -62,11 +55,14 @@ export default function AddressForm({ action, initial, onCancel }: { action: (a:
 
     if (Object.keys(newErrors).length === 0) {
       try {
-        await action(a)
+        action(a)
         toast({
           title: "Address Saved",
           description: "Your address has been saved successfully.",
         })
+        if (formRef.current) {
+          formRef.current.reset()
+        }
       } catch (error) {
         console.error('Address save error:', error)
         toast({
@@ -84,8 +80,7 @@ export default function AddressForm({ action, initial, onCancel }: { action: (a:
         className={`w-full rounded-lg border px-3 py-2 text-sm ${error ? 'border-red-500' : 'border-gray-300'}`} 
         placeholder={placeholder} 
         name={name}
-        value={formData[name as keyof typeof formData]}
-        onChange={(e) => setFormData(prev => ({ ...prev, [name]: e.target.value }))}
+        defaultValue={initial?.[name as keyof typeof initial] || ''}
         type={type} 
       />
       {error && <div className="mt-1 text-xs text-red-600">{error}</div>}
@@ -93,11 +88,11 @@ export default function AddressForm({ action, initial, onCancel }: { action: (a:
   )
 
   return (
-    <form key={initial?.id || 'new'} onSubmit={handleSubmit} className="space-y-3" noValidate>
+    <form ref={formRef} key={initial?.id || 'new'} className="space-y-3" noValidate>
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
         <InputField name="fullName" placeholder="Full Name*" error={errors.fullName} />
         <InputField name="phone" placeholder="Phone*" error={errors.phone} type="tel" />
-        <InputField name="pincode" placeholder="Pincode (6 digits)*" error={errors.pincode} type="number" />
+        <InputField name="pincode" placeholder="Pincode (6 digits)*" error={errors.pincode} />
         <InputField name="city" placeholder="City*" error={errors.city} />
         <div className="md:col-span-2">
           <InputField name="line1" placeholder="Building/Floor*" error={errors.line1} />
@@ -109,7 +104,7 @@ export default function AddressForm({ action, initial, onCancel }: { action: (a:
         <InputField name="landmark" placeholder="Landmark (optional)" />
       </div>
       <div className="flex items-center gap-3 pt-2">
-        <button type="submit" className="rounded-xl bg-brand px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand/90 disabled:opacity-50">Save Address</button>
+        <button type="button" onClick={handleSave} className="rounded-xl bg-brand px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand/90 disabled:opacity-50">Save Address</button>
         {onCancel && <button type="button" onClick={onCancel} className="rounded-xl border px-5 py-2 text-sm font-semibold">Cancel</button>}
       </div>
     </form>
