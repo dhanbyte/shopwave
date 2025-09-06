@@ -3,8 +3,6 @@
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { supabase } from '@/lib/supabase';
-import LoadingSpinner from '@/components/LoadingSpinner';
 
 interface AdminUser {
   id: string;

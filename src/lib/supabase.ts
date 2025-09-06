@@ -1,6 +1,6 @@
 // Client-side API helpers - no MongoDB imports
 
-// Email Authentication helpers
+// MongoDB Authentication helpers
 export const signInWithEmail = async (email: string, password: string) => {
   const response = await fetch('/api/auth/login', {
     method: 'POST',
@@ -35,12 +35,12 @@ export const signOut = async () => {
   return { error: null }
 }
 
-// User profile helpers
+// MongoDB User helpers
 export const createUserProfile = async (userId: string, profile: any) => {
-  const response = await fetch('/api/users/profile', {
+  const response = await fetch('/api/users', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ userId, ...profile })
+    body: JSON.stringify({ _id: userId, ...profile })
   })
   
   const result = await response.json()
@@ -52,7 +52,7 @@ export const createUserProfile = async (userId: string, profile: any) => {
 }
 
 export const getUserProfile = async (userId: string) => {
-  const response = await fetch(`/api/users/profile?userId=${userId}`)
+  const response = await fetch(`/api/users?id=${userId}`)
   const result = await response.json()
   
   if (!response.ok) {
@@ -63,10 +63,10 @@ export const getUserProfile = async (userId: string) => {
 }
 
 export const updateUserProfile = async (userId: string, updates: any) => {
-  const response = await fetch('/api/users/profile', {
+  const response = await fetch('/api/users', {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ userId, ...updates })
+    body: JSON.stringify({ _id: userId, ...updates })
   })
   
   const result = await response.json()

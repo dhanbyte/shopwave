@@ -1,7 +1,6 @@
 'use client'
 
-import { useOrders } from '@/lib/ordersStore'
-import { useProductStore } from '@/lib/productStore'
+
 import Link from 'next/link'
 import { useEffect, useState, useMemo } from 'react'
 import { IndianRupee, ShoppingCart, Users, Package } from 'lucide-react'
@@ -33,11 +32,24 @@ const StatCard = ({ icon: Icon, title, value, color, href }: {
 }
 
 export default function AdminPage() {
-    const { products, init } = useProductStore()
+    const [productCount, setProductCount] = useState(0)
     
     useEffect(() => {
-        init() // Initialize products from all categories
-    }, [init])
+        // Get product count without initializing full store
+        const getProductCount = async () => {
+            try {
+                const response = await fetch('/api/products')
+                if (response.ok) {
+                    const products = await response.json()
+                    setProductCount(Array.isArray(products) ? products.length : 0)
+                }
+            } catch (error) {
+                console.error('Error fetching product count:', error)
+                setProductCount(0)
+            }
+        }
+        getProductCount()
+    }, [])
     const [stats, setStats] = useState({
         totalOrders: 0,
         totalCustomers: 0,
@@ -118,7 +130,7 @@ export default function AdminPage() {
                     <StatCard
                         icon={Package}
                         title="Total Products"
-                        value={`${products.length} (All Categories)`}
+                        value={`${productCount} (All Categories)`}
                         color="bg-purple-500"
                         href="/admin/products"
                     />
