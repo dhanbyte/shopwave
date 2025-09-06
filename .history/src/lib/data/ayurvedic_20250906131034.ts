@@ -1,5 +1,5 @@
 
-import type { Product } from '../types'
+import type { Product } from './types'
 
 // A tiny catalog to start. Replace with API later.
 export const AYURVEDIC_PRODUCTS: Product[] = [

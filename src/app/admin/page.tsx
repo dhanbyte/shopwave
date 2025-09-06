@@ -33,7 +33,11 @@ const StatCard = ({ icon: Icon, title, value, color, href }: {
 }
 
 export default function AdminPage() {
-    const { products } = useProductStore()
+    const { products, init } = useProductStore()
+    
+    useEffect(() => {
+        init() // Initialize products from all categories
+    }, [init])
     const [stats, setStats] = useState({
         totalOrders: 0,
         totalCustomers: 0,
@@ -114,7 +118,7 @@ export default function AdminPage() {
                     <StatCard
                         icon={Package}
                         title="Total Products"
-                        value={products.length}
+                        value={`${products.length} (All Categories)`}
                         color="bg-purple-500"
                         href="/admin/products"
                     />

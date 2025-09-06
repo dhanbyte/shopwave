@@ -1,6 +1,6 @@
 
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAddressBook } from '@/lib/addressStore'
 import type { Address } from '@/lib/types'
 import AddressForm from './AddressForm'
@@ -8,15 +8,34 @@ import { useAuth } from '@/context/ClerkAuthContext'
 
 export default function AddressManager({ onBack }: { onBack: () => void }) {
   const { user } = useAuth()
-  const { addresses, save, setDefault, remove } = useAddressBook()
-  const [showForm, setShowForm] = useState(addresses.length === 0)
+  const { addresses, save, setDefault, remove, init, isLoading } = useAddressBook()
+  const [showForm, setShowForm] = useState(false)
   const [editingAddress, setEditingAddress] = useState<Address | undefined>(undefined)
+  
+  useEffect(() => {
+    if (user && !isLoading) {
+      init(user.id)
+    }
+  }, [user, init, isLoading])
+  
+  useEffect(() => {
+    if (!isLoading && addresses.length === 0) {
+      setShowForm(true)
+    }
+  }, [addresses.length, isLoading])
 
   const handleSaveAddress = async (addr: Omit<Address, 'id'>) => {
     if (user) {
-      await save(user.id, { ...editingAddress, ...addr });
-      setShowForm(false);
-      setEditingAddress(undefined);
+      try {
+        await save(user.id, { ...editingAddress, ...addr });
+        // Force refresh addresses after save
+        await init(user.id);
+        setShowForm(false);
+        setEditingAddress(undefined);
+      } catch (error) {
+        console.error('Failed to save address:', error);
+        alert('Failed to save address. Please try again.');
+      }
     }
   }
   
@@ -71,9 +90,9 @@ export default function AddressManager({ onBack }: { onBack: () => void }) {
           ) : (
             <div className="card p-4">
               <AddressForm 
-                onSubmit={handleSaveAddress} 
+                action={handleSaveAddress} 
                 initial={editingAddress} 
-                onCancel={() => { setShowForm(false); setEditingAddress(undefined); }} 
+                onCancel={addresses.length > 0 ? () => { setShowForm(false); setEditingAddress(undefined); } : undefined} 
               />
             </div>
           )}

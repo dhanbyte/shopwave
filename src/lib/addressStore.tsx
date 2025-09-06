@@ -36,12 +36,16 @@ export const useAddressBook = create<AddressState>()((set, get) => ({
       if (response.ok) {
         const serverAddresses = await response.json();
         console.log('Loaded addresses from server:', serverAddresses);
-        if (serverAddresses && Array.isArray(serverAddresses)) {
+        if (serverAddresses && Array.isArray(serverAddresses) && serverAddresses.length > 0) {
+          // Update local storage with server data
+          const addressBook = getAddressBook();
+          addressBook[userId] = serverAddresses;
+          saveAddressBook(addressBook);
           set({ addresses: serverAddresses, isLoading: false });
           return;
         }
       } else {
-        console.error('Failed to load addresses:', response.status, await response.text());
+        console.error('Failed to load addresses:', response.status);
       }
     } catch (error) {
       console.error('Error loading addresses from server:', error);
@@ -54,25 +58,24 @@ export const useAddressBook = create<AddressState>()((set, get) => ({
     set({ addresses: localAddresses, isLoading: false });
   },
   save: async (userId, address) => {
-    const addressBook = getAddressBook();
-    let userAddresses = addressBook[userId] || [];
-    
-    const existingIndex = address.id ? userAddresses.findIndex((a) => a.id === address.id) : -1;
+    const currentAddresses = get().addresses;
+    const existingIndex = address.id ? currentAddresses.findIndex((a) => a.id === address.id) : -1;
 
     let updatedAddresses;
 
     if (existingIndex > -1) {
       // Update existing address
-      updatedAddresses = userAddresses.map((a, index) => 
+      updatedAddresses = currentAddresses.map((a, index) => 
         index === existingIndex ? { ...a, ...address } : a
       );
     } else {
       // Add new address
       const newAddress = { ...address, id: `addr_${Date.now()}` };
-      // When adding a new address, make it the default.
+      // When adding a new address, make it the default if no default exists
+      const hasDefault = currentAddresses.some(a => a.default);
       updatedAddresses = [
-        ...userAddresses.map(a => ({ ...a, default: false })),
-        { ...newAddress, default: true }
+        ...currentAddresses.map(a => ({ ...a, default: hasDefault ? a.default : false })),
+        { ...newAddress, default: !hasDefault || address.default }
       ];
     }
     
@@ -80,10 +83,15 @@ export const useAddressBook = create<AddressState>()((set, get) => ({
     if (address.default) {
         updatedAddresses = updatedAddresses.map(a => ({
             ...a,
-            default: a.id === address.id
+            default: a.id === (address.id || `addr_${Date.now()}`)
         }));
     }
 
+    // Update state immediately for better UX
+    set({ addresses: updatedAddresses });
+    
+    // Save to localStorage
+    const addressBook = getAddressBook();
     addressBook[userId] = updatedAddresses;
     saveAddressBook(addressBook);
     
@@ -100,13 +108,9 @@ export const useAddressBook = create<AddressState>()((set, get) => ({
       }
     } catch (error) {
       console.error('Error saving addresses to server:', error);
-      // Revert local changes if server save failed
-      const originalAddresses = get().addresses;
-      set({ addresses: originalAddresses });
-      throw error;
+      // Don't revert - keep local changes for offline capability
+      // User will see the address but it may not be synced to server
     }
-    
-    set({ addresses: updatedAddresses });
   },
   remove: async (userId, addressId) => {
     const addressBook = getAddressBook();

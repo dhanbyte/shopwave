@@ -1,5 +1,6 @@
 'use client'
 import { useState, useRef } from 'react'
+import { useToast } from '@/hooks/use-toast'
 
 type Address = {
   id: string
@@ -20,6 +21,7 @@ export default function AddressForm({ action, initial, onCancel }: { action: (a:
   
   const [errors, setErrors] = useState<Record<string, string>>({})
   const formRef = useRef<HTMLFormElement>(null)
+  const { toast } = useToast()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -49,7 +51,19 @@ export default function AddressForm({ action, initial, onCancel }: { action: (a:
     setErrors(newErrors)
 
     if (Object.keys(newErrors).length === 0) {
-      action(a)
+      try {
+        action(a)
+        toast({
+          title: "Address Saved",
+          description: "Your address has been saved successfully.",
+        })
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to save address. Please try again.",
+          variant: "destructive"
+        })
+      }
     }
   }
 

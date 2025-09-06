@@ -7,17 +7,27 @@ export async function GET(request: Request, context?: { params?: Promise<any> })
     
     // Get all users
     const users = await db.collection('users').find({}).toArray()
+    console.log('Total users:', users.length)
+    console.log('Sample users:', users.slice(0, 3))
     
     // Get all user data (cart, wishlist, addresses, orders)
     const allUserData = await db.collection('user_data').find({}).toArray()
+    console.log('Total user data records:', allUserData.length)
+    console.log('Sample user data:', allUserData.slice(0, 3))
     
     const customersData = []
     
     for (const user of users) {
       const userId = user._id.toString()
+      const userEmail = user.email || user.emailAddress
       
-      // Find user's data
-      const userData = allUserData.filter(data => data.userId === userId)
+      // Find user's data - try both string ID and email as userId
+      const userData = allUserData.filter(data => 
+        data.userId === userId || 
+        data.userId === userEmail || 
+        data.userId === user.email ||
+        data.userId === user.emailAddress
+      )
       
       const cart = userData.find(d => d.type === 'cart')?.data || []
       const wishlist = userData.find(d => d.type === 'wishlist')?.data || []
