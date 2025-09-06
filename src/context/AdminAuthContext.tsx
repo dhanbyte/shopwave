@@ -30,8 +30,7 @@ const AdminAuthContext = createContext<AdminAuthContextType>({
 
 // Admin credentials (in production, use environment variables or database)
 const ADMIN_CREDENTIALS = {
-  username: 'Dhanbyte9157',
-  password: '',
+  password: 'Dhanbyte9157',
   email: 'admin@shopwave.com'
 };
 
@@ -70,8 +69,8 @@ export const AdminAuthProvider = ({ children }: { children: ReactNode }) => {
     setLoading(true);
     
     try {
-      // Check admin credentials
-      if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+      // Check admin credentials - only password required
+      if (password === ADMIN_CREDENTIALS.password) {
         const adminUser: AdminUser = {
           id: 'admin-1',
           email: ADMIN_CREDENTIALS.email,

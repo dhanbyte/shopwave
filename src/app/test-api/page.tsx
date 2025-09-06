@@ -60,7 +60,7 @@ export default function ApiTestPage() {
     { name: 'Admin Dashboard', url: '/api/admin/dashboard' },
     { name: 'Admin Orders', url: '/api/admin/orders' },
     { name: 'Admin Customers', url: '/api/admin/customers' },
-    { name: 'Admin Customer Detail', url: '/api/admin/customers/user_123' },
+    { name: 'Admin Customer Detail (First User)', url: '/api/admin/customers/first' },
     { name: 'Admin Coupons', url: '/api/admin/coupons' },
   ]
 
