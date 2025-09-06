@@ -9,9 +9,9 @@ import Link from 'next/link';
 
 
 export const metadata: Metadata = {
-  title: 'ShopWave - Premium Online Shopping | Tech, Home & Ayurvedic Products',
-  description: 'Shop premium tech accessories, home essentials & authentic ayurvedic products. Fast delivery, secure payments, easy returns. Best prices guaranteed.',
-  keywords: 'online shopping, tech accessories, home products, ayurvedic products, electronics, mobile accessories, home decor, natural products',
+  title: 'ShopWave - Best Online Shopping in India | Tech, Home & Ayurvedic Products | Buy Online',
+  description: 'ShopWave India - Best online shopping site for tech accessories, home essentials, ayurvedic products. Lowest prices, fast delivery, easy returns. Shop now at ShopWave!',
+  keywords: 'ShopWave, ShopWave India, online shopping India, best online shopping, tech accessories India, home products online, ayurvedic products online, mobile accessories, kitchen items, buy online India, ecommerce India, online store India, shopping website, best deals online',
   authors: [{ name: 'ShopWave' }],
   creator: 'ShopWave',
   publisher: 'ShopWave',
@@ -20,14 +20,14 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_IN',
     url: 'https://shopwave.dhanbyte.me',
-    title: 'ShopWave - Premium Online Shopping',
-    description: 'Shop premium tech accessories, home essentials & authentic ayurvedic products. Fast delivery, secure payments, easy returns.',
+    title: 'ShopWave - Best Online Shopping in India',
+    description: 'ShopWave India - Best online shopping site for tech accessories, home essentials, ayurvedic products. Lowest prices, fast delivery across India.',
     siteName: 'ShopWave',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'ShopWave - Premium Online Shopping',
-    description: 'Shop premium tech accessories, home essentials & authentic ayurvedic products.',
+    title: 'ShopWave - Best Online Shopping India',
+    description: 'ShopWave India - Best online shopping for tech, home & ayurvedic products. Lowest prices guaranteed.',
     creator: '@shopwave',
   },
 
@@ -79,12 +79,38 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "WebSite",
               "name": "ShopWave",
+              "alternateName": "ShopWave India",
               "url": "https://shopwave.dhanbyte.me",
-              "description": "Premium online shopping for tech accessories, home essentials & ayurvedic products",
+              "description": "Best online shopping in India for tech accessories, home essentials & ayurvedic products",
               "potentialAction": {
                 "@type": "SearchAction",
                 "target": "https://shopwave.dhanbyte.me/search?q={search_term_string}",
                 "query-input": "required name=search_term_string"
+              },
+              "sameAs": [
+                "https://shopwave.dhanbyte.me"
+              ]
+            })
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "ShopWave",
+              "url": "https://shopwave.dhanbyte.me",
+              "logo": "https://shopwave.dhanbyte.me/logo.png",
+              "description": "Best online shopping platform in India",
+              "address": {
+                "@type": "PostalAddress",
+                "addressCountry": "IN"
+              },
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "+91-91574-99884",
+                "contactType": "customer service"
               }
             })
           }}

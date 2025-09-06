@@ -35,49 +35,14 @@ export const useProductStore = create<ProductState>()((set, get) => ({
     set({ isLoading: true });
     
     try {
-      // Fetch from all category APIs
-      const [techRes, ayurvedicRes, homeRes, mongoRes] = await Promise.all([
-        fetch('/api/products/tech'),
-        fetch('/api/products/ayurvedic'),
-        fetch('/api/products/home'),
-        fetch('/api/products')
-      ]);
+      // Use static data instead of API calls for better reliability
+      const allProducts = [...TECH_PRODUCTS, ...AYURVEDIC_PRODUCTS, ...HOME_PRODUCTS];
       
-      let allProducts = [];
-      
-      // Add tech products
-      if (techRes.ok) {
-        const techData = await techRes.json();
-        allProducts.push(...(techData.data || []));
-      }
-      
-      // Add ayurvedic products
-      if (ayurvedicRes.ok) {
-        const ayurvedicData = await ayurvedicRes.json();
-        allProducts.push(...(ayurvedicData.data || []));
-      }
-      
-      // Add home products
-      if (homeRes.ok) {
-        const homeData = await homeRes.json();
-        allProducts.push(...(homeData.data || []));
-      }
-      
-      // Add MongoDB products
-      if (mongoRes.ok) {
-        const mongoData = await mongoRes.json();
-        allProducts.push(...(mongoData.data || []));
-      }
-      
-      // Sort products by latest (newest first)
-      allProducts.sort((a, b) => {
-        const dateA = new Date(a.createdAt || a.updatedAt || Date.now());
-        const dateB = new Date(b.createdAt || b.updatedAt || Date.now());
-        return dateB.getTime() - dateA.getTime();
-      });
-      
-      console.log(`Successfully loaded ${allProducts.length} products from all sources`);
+      console.log(`Successfully loaded ${allProducts.length} products from static data`);
       set({ products: allProducts, isLoading: false, initialized: true });
+      return;
+      
+
       
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -92,7 +57,8 @@ export const useProductStore = create<ProductState>()((set, get) => ({
 
   addProduct: async (productData) => {
     try {
-      const response = await fetch('/api/products', {
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || '';
+      const response = await fetch(`${baseUrl}/api/products`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(productData)
@@ -117,7 +83,8 @@ export const useProductStore = create<ProductState>()((set, get) => ({
 
   updateProduct: async (id: string, updates: Partial<Product>) => {
     try {
-      const response = await fetch(`/api/products/${id}`, {
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || '';
+      const response = await fetch(`${baseUrl}/api/products/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updates)
@@ -147,7 +114,8 @@ export const useProductStore = create<ProductState>()((set, get) => ({
 
   deleteProduct: async (id: string) => {
     try {
-      const response = await fetch(`/api/products/${id}`, {
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || '';
+      const response = await fetch(`${baseUrl}/api/products/${id}`, {
         method: 'DELETE'
       });
       
@@ -168,7 +136,8 @@ export const useProductStore = create<ProductState>()((set, get) => ({
 
   searchProducts: async (query: string) => {
     try {
-      const response = await fetch(`/api/products?search=${encodeURIComponent(query)}`);
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || '';
+      const response = await fetch(`${baseUrl}/api/products?search=${encodeURIComponent(query)}`);
       if (response.ok) {
         const result = await response.json();
         return result.data || [];
@@ -182,7 +151,8 @@ export const useProductStore = create<ProductState>()((set, get) => ({
 
   getProductsByCategory: async (category: string) => {
     try {
-      const response = await fetch(`/api/products?category=${encodeURIComponent(category)}`);
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || '';
+      const response = await fetch(`${baseUrl}/api/products?category=${encodeURIComponent(category)}`);
       if (response.ok) {
         const result = await response.json();
         return result.data || [];

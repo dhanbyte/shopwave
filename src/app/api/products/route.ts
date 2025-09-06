@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getDatabase } from '@/lib/db';
-import { AYURVEDIC_PRODUCTS } from '@/lib/sampleData';
+import { AYURVEDIC_PRODUCTS } from '@/lib/data/ayurvedic';
+import { TECH_PRODUCTS } from '@/lib/data/tech';
+import { HOME_PRODUCTS } from '@/lib/data/home';
 import type { Product } from '@/lib/types';
 
 // GET all products with filtering support
@@ -27,7 +29,7 @@ export async function GET(request: Request, context?: { params?: Promise<any> })
         const mongoProducts = await db.collection('products').find(query).toArray();
         
         // Filter JSON products based on query
-        let jsonProducts = AYURVEDIC_PRODUCTS;
+        let jsonProducts = [...TECH_PRODUCTS, ...HOME_PRODUCTS, ...AYURVEDIC_PRODUCTS];
         if (category) {
             jsonProducts = jsonProducts.filter(p => p.category.toLowerCase() === category.toLowerCase());
         }
@@ -54,7 +56,7 @@ export async function GET(request: Request, context?: { params?: Promise<any> })
         console.error('Error fetching products from MongoDB:', error);
         
         // Fallback to JSON products only
-        let jsonProducts = AYURVEDIC_PRODUCTS;
+        let jsonProducts = [...TECH_PRODUCTS, ...HOME_PRODUCTS, ...AYURVEDIC_PRODUCTS];
         if (category) {
             jsonProducts = jsonProducts.filter(p => p.category.toLowerCase() === category.toLowerCase());
         }
