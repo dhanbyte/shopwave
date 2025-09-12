@@ -1,0 +1,32 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://shopwave.social/sitemap.xml
+
+# Specific crawl rules
+Allow: /search
+Allow: /product
+Allow: /category
+Allow: /api/products
+
+# Block admin and private areas
+Disallow: /admin
+Disallow: /api/auth
+Disallow: /api/users
+Disallow: /_next/
+Disallow: /checkout
+Disallow: /account
+
+# Social media crawlers
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+# Crawl delay
+Crawl-delay: 1

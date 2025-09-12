@@ -1,0 +1,274 @@
+
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-1234-abcdef123456",
+		"name": "ShopWave E-Commerce API",
+		"description": "This collection contains the backend API endpoints for the ShopWave application.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Get All Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/products",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"products"
+							]
+						},
+						"description": "Retrieves a list of all products from the database."
+					},
+					"response": []
+				},
+				{
+					"name": "Create New Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test Product from Postman\",\n    \"slug\": \"test-product-from-postman\",\n    \"brand\": \"PostmanBrand\",\n    \"category\": \"Tech\",\n    \"subcategory\": \"Accessories\",\n    \"price\": {\n        \"original\": 199,\n        \"currency\": \"₹\"\n    },\n    \"quantity\": 50,\n    \"image\": \"https://picsum.photos/400/400\",\n    \"shortDescription\": \"A test product created via Postman.\",\n    \"description\": \"This is a longer description for the test product created via the Postman API collection.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/products",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"products"
+							]
+						},
+						"description": "Creates a new product in the database. Requires at least `name` and `price.original`."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/products/P_TECH_M_01",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"products",
+								"P_TECH_M_01"
+							]
+						},
+						"description": "Retrieves a single product by its unique ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated Test Product Name\",\n    \"price\": {\n        \"original\": 249,\n        \"discounted\": 229,\n        \"currency\": \"₹\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/products/REPLACE_WITH_PRODUCT_ID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"products",
+								"REPLACE_WITH_PRODUCT_ID"
+							]
+						},
+						"description": "Updates an existing product's details. You can send only the fields you want to change."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/products/REPLACE_WITH_PRODUCT_ID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"products",
+								"REPLACE_WITH_PRODUCT_ID"
+							]
+						},
+						"description": "Permanently deletes a product from the database."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payment & Uploads",
+			"item": [
+				{
+					"name": "Razorpay - Create Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": 500\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/razorpay",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"razorpay"
+							]
+						},
+						"description": "Creates a Razorpay payment order. The `amount` should be in the base currency (e.g., INR, not paise). The API will convert it to the smallest unit (paise)."
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"amount\": 500\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/razorpay",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"razorpay"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"order\": {\n        \"id\": \"order_OClY0g4fFz1b2Z\",\n        \"entity\": \"order\",\n        \"amount\": 50000,\n        \"amount_paid\": 0,\n        \"amount_due\": 50000,\n        \"currency\": \"INR\",\n        \"receipt\": \"receipt_order_1725000000000\",\n        \"offer_id\": null,\n        \"status\": \"created\",\n        \"attempts\": 0,\n        \"notes\": [],\n        \"created_at\": 1725000000\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "ImageKit - Get Auth Parameters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/imagekit/auth",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"imagekit",
+								"auth"
+							]
+						},
+						"description": "Retrieves authentication parameters required by the ImageKit SDK on the frontend for secure file uploads."
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/imagekit/auth",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"imagekit",
+										"auth"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"token\": \"c5d01a9a-31b4-4b59-9799-72f5348ba68c\",\n    \"expire\": 1725000300,\n    \"signature\": \"a4e1e8a3b8e5e8e8e1a5a8e1e8e8e1a5a8e1e8e8\"\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://6000-firebase-studio-1756288828902.cluster-cd3bsnf6r5bemwki2bxljme5as.cloudworkstations.dev"
+		}
+	]
+}
