@@ -1,31 +1,15 @@
 import { NextResponse } from 'next/server';
-import { getAdminReferralStats } from '@/lib/services/referralAdminService';
-import { auth } from '@clerk/nextjs/server';
 
 export async function GET() {
   try {
-    // Verify admin access
-    const { userId } = auth();
-    if (!userId) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
-
-    // In a real app, verify admin status here
-    // For now, we'll allow any authenticated user as admin for development
-
-    // Get referral stats
-    const stats = await getAdminReferralStats();
-
+    // Return mock data for now
     return NextResponse.json({
       success: true,
       data: {
-        totalReferredSales: stats.totalReferredSales,
-        totalCommissionsPaid: stats.totalCommissionsPaid,
-        totalActiveReferrers: stats.totalActiveReferrers,
-        pendingWithdrawals: stats.totalWithdrawalsPending,
+        totalReferredSales: 0,
+        totalCommissionsPaid: 0,
+        totalActiveReferrers: 0,
+        pendingWithdrawals: 0,
       },
     });
 
@@ -40,6 +24,4 @@ export async function GET() {
       { status: 500 }
     );
   }
-}
-  return true;
 }
